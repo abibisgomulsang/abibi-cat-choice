@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>아비비의고물상 🐱</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#0d0b1e; --card:rgba(255,255,255,0.07); --border:rgba(255,255,255,0.13);
+    --gold:#FFD93D; --red:#FF6B6B; --green:#03C75A; --text:#ffffff; --muted:rgba(255,255,255,0.55);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);min-height:100vh;color:var(--text);overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(100,60,200,0.18) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(255,107,107,0.12) 0%,transparent 60%);pointer-events:none;z-index:0}
+  .screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px 16px;position:relative;z-index:1;animation:fadeIn .35s ease}
+  .screen.active{display:flex}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .card{background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:24px;padding:28px 22px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.45)}
+  .progress{display:flex;gap:6px;justify-content:center;margin-bottom:22px}
+  .progress-dot{height:8px;border-radius:10px;background:rgba(255,255,255,0.18);transition:all .35s}
+  .progress-dot.active{background:var(--gold);width:28px!important}
+  .progress-dot.done{background:rgba(255,217,61,0.45)}
+  .screen-title{font-family:'Jua',sans-serif;font-size:22px;text-align:center;color:var(--gold);margin-bottom:6px}
+  .screen-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:22px;line-height:1.6}
+  .btn-primary{display:block;width:100%;background:linear-gradient(135deg,#FFD93D,#FF6B6B);border:none;border-radius:14px;color:#1a1a2e;font-family:'Jua',sans-serif;font-size:16px;letter-spacing:.5px;padding:14px;cursor:pointer;margin-top:12px;box-shadow:0 4px 18px rgba(255,217,61,0.28);transition:transform .15s,opacity .15s;text-decoration:none;text-align:center}
+  .btn-primary:active{transform:scale(.97)}
+  .btn-primary:disabled{opacity:.38}
+  .btn-ghost{display:block;width:100%;background:rgba(255,255,255,0.08);border:1px solid var(--border);border-radius:14px;color:var(--text);font-size:14px;padding:12px;cursor:pointer;margin-top:8px;transition:background .15s}
+  input[type=text],input[type=password],textarea{width:100%;background:rgba(255,255,255,0.09);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-size:15px;font-family:'Noto Sans KR',sans-serif;outline:none;transition:border-color .2s}
+  input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:var(--gold)}
+  input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.3)}
+  label{font-size:13px;color:rgba(255,255,255,0.75);display:block;margin-bottom:6px}
+  .gender-wrap{display:flex;gap:12px}
+  .gender-btn{flex:1;background:rgba(255,255,255,0.08);border:1.5px solid var(--border);border-radius:16px;color:var(--text);cursor:pointer;padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;font-family:'Jua',sans-serif;font-size:14px;transition:all .2s}
+  .gender-btn .icon{font-size:32px}
+  .gender-btn.selected{background:rgba(255,217,61,0.18);border-color:var(--gold);color:var(--gold);box-shadow:0 0 18px rgba(255,217,61,0.2)}
+  .age-display{text-align:center;margin:10px 0 18px}
+  .age-number{font-family:'Jua',sans-serif;font-size:68px;color:var(--gold);line-height:1;text-shadow:0 0 40px rgba(255,217,61,0.4)}
+  .age-label{font-size:13px;color:var(--muted);margin-top:4px}
+  input[type=range]{width:100%;accent-color:var(--gold);height:6px;cursor:pointer}
+  .age-quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;justify-content:center}
+  .age-quick-btn{background:rgba(255,255,255,0.08);border:1px solid var(--border);border-radius:20px;color:var(--text);font-size:12px;padding:5px 12px;cursor:pointer;transition:all .2s;font-family:'Jua',sans-serif}
+  .age-quick-btn.selected{background:rgba(255,217,61,0.2);border-color:var(--gold);color:var(--gold)}
+  .tag-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .tag-btn{background:rgba(255,255,255,0.08);border:1.5px solid var(--border);border-radius:22px;color:var(--text);cursor:pointer;padding:10px 16px;font-size:14px;font-family:'Jua',sans-serif;display:flex;align-items:center;gap:6px;transition:all .2s}
+  .tag-btn.selected{background:linear-gradient(135deg,rgba(255,217,61,0.25),rgba(255,107,107,0.2));border-color:var(--gold);color:var(--gold);box-shadow:0 3px 12px rgba(255,217,61,0.25)}
+  .tag-count{text-align:center;color:var(--gold);font-size:12px;margin-bottom:16px}
+  .personality-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .personality-btn{background:rgba(255,255,255,0.07);border:1.5px solid var(--border);border-radius:16px;color:var(--text);cursor:pointer;padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .2s}
+  .personality-btn .p-icon{font-size:30px}
+  .personality-btn .p-name{font-family:'Jua',sans-serif;font-size:15px}
+  .personality-btn .p-desc{font-size:11px;color:var(--muted);line-height:1.4}
+  .personality-btn.selected{background:rgba(255,217,61,0.18);border-color:var(--gold);box-shadow:0 0 18px rgba(255,217,61,0.18)}
+  .personality-btn.selected .p-name,.personality-btn.selected .p-desc{color:var(--gold)}
+  #screen-result{justify-content:flex-start;padding-top:36px}
+  .result-header{text-align:center;margin-bottom:22px;width:100%;max-width:440px}
+  .result-header .big-emoji{font-size:56px}
+  .result-header h2{font-family:'Jua',sans-serif;font-size:22px;color:var(--gold);margin-top:8px}
+  .result-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}
+  .chip{background:rgba(255,217,61,0.15);border:1px solid rgba(255,217,61,0.3);border-radius:20px;padding:4px 12px;color:var(--gold);font-size:12px}
+  .product-card{background:var(--card);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:20px;padding:18px;width:100%;max-width:440px;margin-bottom:14px;position:relative;overflow:hidden;animation:fadeIn .4s ease both}
+  .product-card.best{border-color:var(--gold);border-width:2px}
+  .best-badge{position:absolute;top:0;right:0;background:linear-gradient(135deg,var(--gold),var(--red));color:#1a1a2e;font-family:'Jua',sans-serif;font-size:11px;padding:4px 12px;border-bottom-left-radius:12px}
+  .product-inner{display:flex;gap:14px}
+  .product-thumb{width:88px;height:88px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,#2a1a4e,#1a2a4e);display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden}
+  .product-thumb img{width:100%;height:100%;object-fit:cover;border-radius:12px}
+  .product-info{flex:1}
+  .product-name{font-family:'Jua',sans-serif;font-size:16px;margin-bottom:5px}
+  .product-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:6px}
+  .product-price{color:var(--gold);font-family:'Jua',sans-serif;font-size:15px}
+  .product-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+  .product-tag{background:rgba(255,255,255,0.09);border-radius:20px;padding:2px 9px;font-size:11px;color:var(--muted)}
+  .store-btn{display:block;margin-top:12px;width:100%;background:linear-gradient(135deg,#03C75A,#02a34e);border:none;border-radius:12px;color:#fff;text-align:center;padding:12px;text-decoration:none;font-family:'Jua',sans-serif;font-size:15px;cursor:pointer;box-shadow:0 4px 16px rgba(3,199,90,0.3);transition:transform .15s}
+  .store-btn:active{transform:scale(.97)}
+  .result-actions{display:flex;gap:10px;width:100%;max-width:440px;margin-bottom:40px}
+  .result-actions .btn-primary{margin-top:0}
+  .home-logo{font-size:76px;animation:float 3s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .home-brand{font-family:'Jua',sans-serif;font-size:28px;color:var(--gold);margin-top:4px;text-align:center;text-shadow:0 2px 24px rgba(255,217,61,0.45)}
+  .home-sub{color:var(--muted);font-size:14px;margin-top:8px;text-align:center;margin-bottom:28px}
+  .home-features{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:22px}
+  .home-feat{text-align:center;background:rgba(255,217,61,0.09);border-radius:14px;padding:14px 8px}
+  .home-feat .f-icon{font-size:26px}
+  .home-feat .f-label{font-size:11px;color:var(--gold);margin-top:4px}
+  .admin-btn{margin-top:18px;background:transparent;border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:rgba(255,255,255,0.35);padding:8px 20px;cursor:pointer;font-size:12px;transition:all .2s}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;overflow-y:auto;padding:20px;align-items:flex-start;justify-content:center}
+  .overlay.active{display:flex}
+  .admin-panel{background:#1a1a2e;border:2px solid #e94560;border-radius:22px;padding:26px 20px;width:100%;max-width:680px;color:#fff;margin:auto}
+  .admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+  .admin-title{font-family:'Jua',sans-serif;font-size:20px;color:var(--gold)}
+  .admin-close{background:#e94560;border:none;border-radius:8px;color:#fff;padding:7px 14px;cursor:pointer;font-size:14px}
+  .admin-section{background:#16213e;border-radius:14px;padding:18px;margin-bottom:20px;border:1px solid #e94560}
+  .admin-section-title{font-family:'Jua',sans-serif;color:var(--gold);margin-bottom:14px;font-size:16px}
+  .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .admin-field{display:flex;flex-direction:column;gap:4px}
+  .admin-field label{font-size:11px;color:#aaa}
+  .admin-field input,.admin-field textarea{background:#0f3460;border:1px solid #444;border-radius:8px;padding:8px 10px;color:#fff;font-size:12px;width:100%;font-family:'Noto Sans KR',sans-serif}
+  .admin-field.full{grid-column:1/-1}
+  .admin-add-btn{margin-top:14px;background:var(--gold);border:none;border-radius:10px;color:#1a1a2e;padding:10px 22px;cursor:pointer;font-family:'Jua',sans-serif;font-size:14px}
+  .product-list-item{background:#16213e;border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid #333;display:flex;align-items:center;gap:12px}
+  .product-list-thumb{width:52px;height:52px;border-radius:8px;background:linear-gradient(135deg,#2a1a4e,#1a2a4e);display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden;flex-shrink:0}
+  .product-list-thumb img{width:100%;height:100%;object-fit:cover}
+  .product-list-info{flex:1}
+  .product-list-name{font-family:'Jua',sans-serif;font-size:14px}
+  .product-list-price{font-size:12px;color:var(--gold)}
+  .product-list-tags{font-size:11px;color:#666;margin-top:2px}
+  .product-list-actions{display:flex;gap:6px}
+  .btn-edit{background:#0f3460;border:1px solid #4ECDC4;border-radius:7px;color:#4ECDC4;padding:5px 10px;cursor:pointer;font-size:12px}
+  .btn-delete{background:#0f3460;border:1px solid #e94560;border-radius:7px;color:#e94560;padding:5px 10px;cursor:pointer;font-size:12px}
+  .edit-form{background:#0f3460;border-radius:10px;padding:14px;margin-top:10px}
+  @media(max-width:400px){.card{padding:22px 16px}.age-number{font-size:56px}.personality-grid{gap:7px}}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="home-logo">🐱</div>
+  <div class="home-brand">아비비의고물상</div>
+  <div class="home-sub">우리 아이 성격에 딱 맞는 장난감을 찾아드려요 🎁</div>
+  <div class="card">
+    <div style="text-align:center;margin-bottom:18px">
+      <div style="font-size:34px">🧬</div>
+      <div style="font-family:'Jua',sans-serif;font-size:18px;margin-top:6px">고양이 장난감 MBTI 테스트</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6">간단한 질문으로 우리 아이에게 딱 맞는<br>장난감을 추천해드릴게요!</div>
+    </div>
+    <div class="home-features">
+      <div class="home-feat"><div class="f-icon">🪶</div><div class="f-label">재질 선택</div></div>
+      <div class="home-feat"><div class="f-icon">😺</div><div class="f-label">성격 분석</div></div>
+      <div class="home-feat"><div class="f-icon">🎁</div><div class="f-label">맞춤 추천</div></div>
+    </div>
+    <button class="btn-primary" onclick="goTo('name')">테스트 시작하기 🐾</button>
+  </div>
+  <button class="admin-btn" onclick="showAdminLogin()">🛠️ 관리자</button>
+</div>
+
+<!-- NAME & GENDER -->
+<div class="screen" id="screen-name">
+  <div style="width:100%;max-width:420px">
+    <div class="progress" id="prog-name"></div>
+    <div class="card">
+      <div class="screen-title">😺 우리 아이를 소개해요</div>
+      <div class="screen-sub">이름과 성별을 알려주세요!</div>
+      <label>고양이 이름</label>
+      <input type="text" id="cat-name" placeholder="예) 나비, 뽀짝이..." oninput="checkName()"/>
+      <div style="height:18px"></div>
+      <label>성별</label>
+      <div class="gender-wrap">
+        <button class="gender-btn" id="gb-male" onclick="selectGender('수컷')">
+          <span class="icon">♂️</span><span>남아 (수컷)</span>
+        </button>
+        <button class="gender-btn" id="gb-female" onclick="selectGender('암컷')">
+          <span class="icon">♀️</span><span>여아 (암컷)</span>
+        </button>
+      </div>
+      <button class="btn-primary" id="btn-name-next" disabled onclick="goTo('age')">다음으로 →</button>
+      <button class="btn-ghost" onclick="goTo('home')">← 처음으로</button>
+    </div>
+  </div>
+</div>
+
+<!-- AGE -->
+<div class="screen" id="screen-age">
+  <div style="width:100%;max-width:420px">
+    <div class="progress" id="prog-age"></div>
+    <div class="card">
+      <div class="screen-title" id="age-title">🎂 나이는?</div>
+      <div class="screen-sub">나이에 맞는 장난감을 추천해드려요!</div>
+      <div class="age-display">
+        <div class="age-number" id="age-val">1</div>
+        <div class="age-label" id="age-group-label">😺 아기 고양이 (0~1살)</div>
+      </div>
+      <input type="range" min="0" max="20" step="1" value="1" id="age-slider" oninput="updateAge(this.value)"/>
+      <div style="display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:4px"><span>0살</span><span>10살</span><span>20살</span></div>
+      <div class="age-quick" id="age-quick-btns"></div>
+      <button class="btn-primary" onclick="goTo('material')">다음으로 →</button>
+      <button class="btn-ghost" onclick="goTo('name')">← 이전</button>
+    </div>
+  </div>
+</div>
+
+<!-- MATERIAL -->
+<div class="screen" id="screen-material">
+  <div style="width:100%;max-width:420px">
+    <div class="progress" id="prog-material"></div>
+    <div class="card">
+      <div class="screen-title">🪄 좋아하는 재질은?</div>
+      <div class="screen-sub">최대 3개까지 선택할 수 있어요!</div>
+      <div class="tag-count" id="mat-count">선택됨 0/3</div>
+      <div class="tag-grid" id="material-tags"></div>
+      <button class="btn-primary" id="btn-mat-next" disabled onclick="goTo('personality')">다음으로 →</button>
+      <button class="btn-ghost" onclick="goTo('age')">← 이전</button>
+    </div>
+  </div>
+</div>
+
+<!-- PERSONALITY -->
+<div class="screen" id="screen-personality">
+  <div style="width:100%;max-width:420px">
+    <div class="progress" id="prog-personality"></div>
+    <div class="card">
+      <div class="screen-title" id="pers-title">😸 성격은?</div>
+      <div class="screen-sub">가장 잘 맞는 성격을 하나 골라주세요!</div>
+      <div class="personality-grid" id="personality-grid"></div>
+      <button class="btn-primary" id="btn-pers-next" disabled onclick="showResult()">🎁 추천 결과 보기</button>
+      <button class="btn-ghost" onclick="goTo('material')">← 이전</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="screen-result">
+  <div class="result-header">
+    <div class="big-emoji">🎉</div>
+    <h2 id="result-title">추천 장난감</h2>
+    <div class="result-chips" id="result-chips"></div>
+  </div>
+  <div id="result-cards" style="width:100%;max-width:440px"></div>
+  <div class="result-actions">
+    <button class="btn-primary" onclick="restart()">🔄 다시 테스트</button>
+    <a class="btn-primary" href="https://smartstore.naver.com/avivi" target="_blank">🏪 전체 상품</a>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div class="overlay" id="overlay-login">
+  <div class="card" style="max-width:320px;text-align:center">
+    <div style="font-size:40px;margin-bottom:10px">🔐</div>
+    <div style="font-family:'Jua',sans-serif;font-size:18px;margin-bottom:16px">관리자 로그인</div>
+    <input type="password" id="admin-pw" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkAdmin()"/>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn-ghost" style="margin-top:0" onclick="closeAdminLogin()">취소</button>
+      <button class="btn-primary" style="margin-top:0" onclick="checkAdmin()">입장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="overlay" id="overlay-admin">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <div class="admin-title">🛠️ 관리자 패널</div>
+      <button class="admin-close" onclick="closeAdmin()">✕ 닫기</button>
+    </div>
+    <div class="admin-section">
+      <div class="admin-section-title">➕ 새 상품 추가</div>
+      <div class="admin-grid">
+        <div class="admin-field"><label>상품명</label><input type="text" id="new-name" placeholder="장난감 이름"/></div>
+        <div class="admin-field"><label>가격</label><input type="text" id="new-price" placeholder="12,900원"/></div>
+        <div class="admin-field"><label>스마트스토어 URL</label><input type="text" id="new-url" value="https://smartstore.naver.com/avivi"/></div>
+        <div class="admin-field"><label>태그 (쉼표 구분, 예: 깃털,활발한,젊은)</label><input type="text" id="new-tags" placeholder="깃털, 활발한, 젊은"/></div>
+        <div class="admin-field full"><label>설명</label><textarea id="new-desc" rows="2" placeholder="상품 설명"></textarea></div>
+        <div class="admin-field full">
+          <label>상품 이미지 업로드</label>
+          <input type="file" accept="image/*" id="new-img-file" onchange="previewNewImg(this)" style="color:#fff;font-size:12px"/>
+          <img id="new-img-preview" src="" style="width:70px;height:70px;object-fit:cover;border-radius:8px;margin-top:8px;display:none"/>
+        </div>
+      </div>
+      <button class="admin-add-btn" onclick="addProduct()">상품 추가하기</button>
+    </div>
+    <div style="color:var(--gold);font-family:'Jua',sans-serif;font-size:16px;margin-bottom:12px">📦 등록된 상품 목록</div>
+    <div id="admin-product-list"></div>
+  </div>
+</div>
+
+<script>
+let products=[
+  {id:1,name:"무지개 깃털 낚싯대",image:"",tags:["깃털","활발한","호기심많은","젊은"],description:"형형색색 깃털이 달린 낚싯대로 사냥 본능을 자극해요!",price:"12,900원",storeUrl:"https://smartstore.naver.com/avivi"},
+  {id:2,name:"바스락 비닐 터널",image:"",tags:["비닐","활발한","호기심많은"],description:"바스락거리는 소리에 고양이가 미쳐요! 숨기 좋은 터널형",price:"18,500원",storeUrl:"https://smartstore.naver.com/avivi"},
+  {id:3,name:"폼폼이 공 세트",image:"",tags:["폼폼이","활발한","젊은","중년"],description:"가볍고 부드러운 폼폼이 공! 실내에서 마음껏 굴려요",price:"8,900원",storeUrl:"https://smartstore.naver.com/avivi"},
+  {id:4,name:"실리콘 물고기 장난감",image:"",tags:["실리콘","진지한","중년","노령"],description:"내구성 최강 실리콘! 씹고 뜯고 즐기는 물고기 모양",price:"14,000원",storeUrl:"https://smartstore.naver.com/avivi"},
+  {id:5,name:"끈 달린 낚시 세트",image:"",tags:["끈","활발한","호기심많은","젊은"],description:"주인이 직접 놀아주는 끈 낚시! 유대감 UP",price:"9,500원",storeUrl:"https://smartstore.naver.com/avivi"},
+  {id:6,name:"고급 깃털 왕관 장난감",image:"",tags:["깃털","진지한","중년"],description:"우아한 고양이를 위한 고급 깃털 왕관",price:"22,000원",storeUrl:"https://smartstore.naver.com/avivi"},
+  {id:7,name:"노령묘 전용 부드러운 폼폼이",image:"",tags:["폼폼이","실리콘","노령","진지한"],description:"관절이 약한 노령묘를 위해 특별 제작된 초경량 장난감",price:"11,000원",storeUrl:"https://smartstore.naver.com/avivi"},
+  {id:8,name:"비닐 바스락 쥐돌이",image:"",tags:["비닐","끈","호기심많은","젊은"],description:"쥐 모양에 바스락 비닐 소재! 사냥 본능을 깨워줘요",price:"7,900원",storeUrl:"https://smartstore.naver.com/avivi"},
+];
+
+const EMOJI_MAP={"깃털":"🪶","비닐":"🛍️","폼폼이":"🎾","실리콘":"🔵","끈":"🧵","천":"🧶","종이":"📄","나무":"🪵"};
+function getEmoji(p){for(const t of p.tags){if(EMOJI_MAP[t])return EMOJI_MAP[t];}return"🐱";}
+
+let cat={name:"",gender:"",age:1,materials:[],personality:""};
+const MATERIALS=[{name:"깃털",icon:"🪶"},{name:"비닐",icon:"🛍️"},{name:"폼폼이",icon:"🎾"},{name:"실리콘",icon:"🔵"},{name:"끈",icon:"🧵"},{name:"천",icon:"🧶"},{name:"종이",icon:"📄"},{name:"나무",icon:"🪵"}];
+const PERSONALITIES=[{name:"활발한",icon:"⚡",desc:"뛰고 점프하는 걸 좋아해요"},{name:"진지한",icon:"🧐",desc:"차분하고 신중해요"},{name:"호기심많은",icon:"👀",desc:"뭐든 살펴보고 탐험해요"},{name:"겁쟁이",icon:"🙈",desc:"새로운 것에 조심스러워요"},{name:"식탐이많은",icon:"🍗",desc:"먹는 것에 관심이 많아요"},{name:"게으른",icon:"💤",desc:"낮잠을 즐겨요"}];
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='age')renderAge();
+  if(id==='material')renderMaterials();
+  if(id==='personality')renderPersonalities();
+  renderProgress(id);
+}
+
+function renderProgress(id){
+  const steps={name:1,age:2,material:3,personality:4};
+  const step=steps[id]; if(!step)return;
+  const el=document.getElementById('prog-'+id); if(!el)return;
+  el.innerHTML=[1,2,3,4].map(i=>`<div class="progress-dot ${i===step?'active':i<step?'done':''}" style="width:${i===step?28:10}px"></div>`).join('');
+}
+
+function checkName(){
+  cat.name=document.getElementById('cat-name').value.trim();
+  document.getElementById('btn-name-next').disabled=!(cat.name&&cat.gender);
+}
+function selectGender(g){
+  cat.gender=g;
+  document.getElementById('gb-male').classList.toggle('selected',g==='수컷');
+  document.getElementById('gb-female').classList.toggle('selected',g==='암컷');
+  checkName();
+}
+
+function renderAge(){
+  document.getElementById('age-title').textContent=`🎂 ${cat.name||'아이'}(이)의 나이는?`;
+  document.getElementById('age-slider').value=cat.age;
+  updateAge(cat.age);
+  const ages=[0,1,2,3,4,5,6,7,8,10,12,15,18,20];
+  document.getElementById('age-quick-btns').innerHTML=ages.map(n=>`<button class="age-quick-btn ${cat.age===n?'selected':''}" onclick="quickAge(${n})">${n}살</button>`).join('');
+}
+function updateAge(v){
+  cat.age=parseInt(v);
+  document.getElementById('age-val').textContent=v;
+  document.getElementById('age-group-label').textContent=v<=1?"😺 아기 고양이 (0~1살)":v<=7?"😼 청년 고양이 (2~7살)":"🐱 시니어 고양이 (8살+)";
+  document.getElementById('age-slider').value=v;
+  document.querySelectorAll('.age-quick-btn').forEach(b=>b.classList.toggle('selected',parseInt(b.textContent)===cat.age));
+}
+function quickAge(n){updateAge(n);}
+
+function renderMaterials(){
+  document.getElementById('material-tags').innerHTML=MATERIALS.map(m=>`<button class="tag-btn ${cat.materials.includes(m.name)?'selected':''}" onclick="toggleMat('${m.name}')"><span>${m.icon}</span><span>${m.name}</span></button>`).join('');
+  const n=cat.materials.length;
+  document.getElementById('mat-count').textContent=`선택됨 ${n}/3`;
+  document.getElementById('btn-mat-next').disabled=n===0;
+}
+function toggleMat(m){
+  if(cat.materials.includes(m))cat.materials=cat.materials.filter(x=>x!==m);
+  else if(cat.materials.length<3)cat.materials.push(m);
+  renderMaterials();
+}
+
+function renderPersonalities(){
+  document.getElementById('pers-title').textContent=`😸 ${cat.name||'아이'}(이)의 성격은?`;
+  document.getElementById('personality-grid').innerHTML=PERSONALITIES.map(p=>`<button class="personality-btn ${cat.personality===p.name?'selected':''}" onclick="selectPers('${p.name}')"><span class="p-icon">${p.icon}</span><span class="p-name">${p.name}</span><span class="p-desc">${p.desc}</span></button>`).join('');
+  document.getElementById('btn-pers-next').disabled=!cat.personality;
+}
+function selectPers(p){cat.personality=p;renderPersonalities();}
+
+function getAgeTag(a){return a<=1?"젊은":a<=7?"중년":"노령";}
+function getRecs(){
+  const at=getAgeTag(cat.age);
+  const pt=cat.personality==="활발한"?["활발한","호기심많은"]:cat.personality==="호기심많은"?["호기심많은","활발한"]:cat.personality==="게으른"?["진지한"]:["진지한",cat.personality];
+  return products.map(p=>{
+    let s=0;
+    if(p.tags.includes(at))s+=3;
+    cat.materials.forEach(m=>{if(p.tags.includes(m))s+=2;});
+    pt.forEach(t=>{if(p.tags.includes(t))s+=2;});
+    return{...p,score:s};
+  }).filter(p=>p.score>0).sort((a,b)=>b.score-a.score).slice(0,4);
+}
+
+function showResult(){
+  const recs=getRecs();
+  document.getElementById('result-title').textContent=`${cat.name}(이)의 추천 장난감`;
+  document.getElementById('result-chips').innerHTML=[cat.gender,cat.age+'살',cat.personality,...cat.materials].map(c=>`<span class="chip">${c}</span>`).join('');
+  if(!recs.length){
+    document.getElementById('result-cards').innerHTML=`<div class="product-card" style="text-align:center;padding:32px"><div style="font-size:48px">😿</div><p style="margin-top:12px;color:var(--muted)">조건에 맞는 상품이 없어요.<br>다시 테스트해보세요!</p></div>`;
+  }else{
+    document.getElementById('result-cards').innerHTML=recs.map((p,i)=>`
+      <div class="product-card ${i===0?'best':''}" style="animation-delay:${i*0.1}s">
+        ${i===0?'<div class="best-badge">👑 BEST 추천</div>':''}
+        <div class="product-inner">
+          <div class="product-thumb">${p.image?`<img src="${p.image}" alt="${p.name}"/>`:getEmoji(p)}</div>
+          <div class="product-info">
+            <div class="product-name">${p.name}</div>
+            <div class="product-desc">${p.description}</div>
+            <div class="product-price">${p.price}</div>
+          </div>
+        </div>
+        <div class="product-tags">${p.tags.map(t=>`<span class="product-tag">#${t}</span>`).join('')}</div>
+        <a class="store-btn" href="${p.storeUrl}" target="_blank">🛒 스마트스토어에서 보기</a>
+      </div>`).join('');
+  }
+  goTo('result');
+}
+
+function restart(){
+  cat={name:"",gender:"",age:1,materials:[],personality:""};
+  document.getElementById('cat-name').value='';
+  document.getElementById('gb-male').classList.remove('selected');
+  document.getElementById('gb-female').classList.remove('selected');
+  document.getElementById('btn-name-next').disabled=true;
+  goTo('home');
+}
+
+// ADMIN
+const ADMIN_PW="avivi2024";
+function showAdminLogin(){document.getElementById('overlay-login').classList.add('active');document.getElementById('admin-pw').value='';}
+function closeAdminLogin(){document.getElementById('overlay-login').classList.remove('active');}
+function checkAdmin(){if(document.getElementById('admin-pw').value===ADMIN_PW){closeAdminLogin();openAdmin();}else{alert("비밀번호가 틀렸어요!");}}
+function openAdmin(){document.getElementById('overlay-admin').classList.add('active');renderAdminList();}
+function closeAdmin(){document.getElementById('overlay-admin').classList.remove('active');}
+
+let newImgData="";
+function previewNewImg(input){
+  const file=input.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onloadend=()=>{newImgData=r.result;const p=document.getElementById('new-img-preview');p.src=r.result;p.style.display='block';};
+  r.readAsDataURL(file);
+}
+
+function addProduct(){
+  const name=document.getElementById('new-name').value.trim();
+  if(!name){alert("상품명을 입력해주세요!");return;}
+  products.push({id:Date.now(),name,price:document.getElementById('new-price').value.trim()||"0원",storeUrl:document.getElementById('new-url').value.trim()||"https://smartstore.naver.com/avivi",tags:document.getElementById('new-tags').value.split(',').map(t=>t.trim()).filter(Boolean),description:document.getElementById('new-desc').value.trim(),image:newImgData});
+  newImgData="";
+  ['new-name','new-price','new-tags','new-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('new-url').value='https://smartstore.naver.com/avivi';
+  document.getElementById('new-img-preview').style.display='none';
+  document.getElementById('new-img-file').value='';
+  renderAdminList();
+}
+
+let editId=null,editImg=null;
+function renderAdminList(){
+  document.getElementById('admin-product-list').innerHTML=products.map(p=>`
+    <div class="product-list-item">
+      <div class="product-list-thumb">${p.image?`<img src="${p.image}"/>`:getEmoji(p)}</div>
+      <div class="product-list-info">
+        <div class="product-list-name">${p.name}</div>
+        <div class="product-list-price">${p.price}</div>
+        <div class="product-list-tags">${p.tags.join(', ')}</div>
+      </div>
+      <div class="product-list-actions">
+        <button class="btn-edit" onclick="startEdit(${p.id})">✏️</button>
+        <button class="btn-delete" onclick="delProduct(${p.id})">🗑️</button>
+      </div>
+    </div>
+    ${editId===p.id?`<div class="edit-form">
+      <div class="admin-grid" style="margin-bottom:10px">
+        <div class="admin-field"><label>상품명</label><input type="text" id="e-name" value="${p.name}"/></div>
+        <div class="admin-field"><label>가격</label><input type="text" id="e-price" value="${p.price}"/></div>
+        <div class="admin-field"><label>URL</label><input type="text" id="e-url" value="${p.storeUrl}"/></div>
+        <div class="admin-field"><label>태그</label><input type="text" id="e-tags" value="${p.tags.join(', ')}"/></div>
+        <div class="admin-field full"><label>설명</label><textarea id="e-desc" rows="2">${p.description}</textarea></div>
+        <div class="admin-field full"><label>이미지 교체</label><input type="file" accept="image/*" onchange="previewEditImg(this)" style="color:#fff;font-size:12px"/>${p.image?`<img id="edit-img-prev" src="${p.image}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;margin-top:6px"/>`:'<span id="edit-img-prev"></span>'}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="saveEdit(${p.id})" style="background:var(--gold);border:none;border-radius:8px;color:#1a1a2e;padding:8px 16px;cursor:pointer;font-family:'Jua',sans-serif;font-size:13px">💾 저장</button>
+        <button onclick="cancelEdit()" style="background:#444;border:none;border-radius:8px;color:#fff;padding:8px 16px;cursor:pointer;font-size:13px">취소</button>
+      </div>
+    </div>`:''}
+  `).join('');
+}
+function previewEditImg(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onloadend=()=>{editImg=r.result;document.getElementById('edit-img-prev').src=r.result;};r.readAsDataURL(f);}
+function startEdit(id){editId=id;editImg=null;renderAdminList();}
+function cancelEdit(){editId=null;renderAdminList();}
+function saveEdit(id){
+  products=products.map(p=>p.id===id?{...p,name:document.getElementById('e-name').value,price:document.getElementById('e-price').value,storeUrl:document.getElementById('e-url').value,tags:document.getElementById('e-tags').value.split(',').map(t=>t.trim()).filter(Boolean),description:document.getElementById('e-desc').value,image:editImg!==null?editImg:p.image}:p);
+  editId=null;editImg=null;renderAdminList();
+}
+function delProduct(id){if(confirm("정말 삭제하시겠어요?")){products=products.filter(p=>p.id!==id);renderAdminList();}}
+
+renderProgress('name');
+</script>
+</body>
+</html>
