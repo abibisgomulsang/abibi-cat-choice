@@ -221,24 +221,90 @@ input[type=range]{width:100%;accent-color:var(--g1);cursor:pointer;height:6px}
       <div class="ttl" id="pers-ttl">😸 성격은?</div>
       <div class="sub">가장 잘 맞는 성격을 골라주세요!</div>
       <div class="pg" id="pers-g"></div>
-      <button class="btn bp" id="btn-p" disabled onclick="showResult()">🎁 추천 결과 보기</button>
+      <button class="btn bp" id="btn-p" disabled onclick="go('budget')">다음으로 →</button>
       <button class="btn bg" onclick="go('mat')">← 이전</button>
+    </div>
+  </div>
+</div>
+
+<!-- BUDGET -->
+<div class="scr" id="s-budget">
+  <div style="width:100%;max-width:420px">
+    <div class="prog" id="pg-budget"></div>
+    <div class="card">
+      <div class="ttl">💰 예산은 얼마나요?</div>
+      <div class="sub" id="budget-sub">아이에게 딱 맞는 가격대를 골라드려요!</div>
+
+      <div style="text-align:center;margin:10px 0 18px">
+        <div style="font-family:Jua,sans-serif;font-size:52px;color:var(--g1);text-shadow:0 0 30px rgba(255,217,61,.35)" id="budget-val">14,000원</div>
+        <div style="font-size:12px;color:var(--mu);margin-top:4px" id="budget-range-lbl">적당한 가격대예요 😊</div>
+      </div>
+
+      <input type="range" min="3000" max="50000" step="1000" value="14000" id="budget-sl" oninput="updBudget(this.value)"/>
+      <div style="display:flex;justify-content:space-between;color:var(--mu);font-size:11px;margin-top:3px">
+        <span>3,000원</span><span>25,000원</span><span>50,000원</span>
+      </div>
+
+      <!-- 빠른 선택 버튼 -->
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;justify-content:center" id="budget-quick"></div>
+
+      <button class="btn bp" onclick="go('rod')" style="margin-top:18px">다음으로 →</button>
+      <button class="btn bg" onclick="go('pers')">← 이전</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ROD SELECTION -->
+<div class="scr" id="s-rod">
+  <div style="width:100%;max-width:420px">
+    <div class="prog" id="pg-rod"></div>
+    <div class="card">
+      <div class="ttl">🎣 낚시대/막대가 필요하신가요?</div>
+      <div class="sub">함께 구매할 낚시대를 선택하면<br>합산 가격으로 추천해드려요! (복수 선택 가능)</div>
+      <div id="rod-skip-wrap" style="text-align:center;margin-bottom:14px">
+        <button id="rod-skip-btn" onclick="toggleRodSkip()" style="background:rgba(255,255,255,.08);border:1.5px solid var(--border);border-radius:20px;color:var(--mu);padding:7px 18px;cursor:pointer;font-size:13px;font-family:Jua,sans-serif;transition:all .2s">
+          필요없어요 (건너뛰기)
+        </button>
+      </div>
+      <div id="rod-list" style="display:flex;flex-direction:column;gap:10px"></div>
+      <div id="rod-total-wrap" style="display:none;margin-top:16px;padding:12px 16px;background:rgba(255,217,61,.1);border:1px solid rgba(255,217,61,.3);border-radius:12px;text-align:center">
+        <div style="font-size:12px;color:var(--mu);margin-bottom:3px">선택한 낚시대 합계</div>
+        <div style="font-family:Jua,sans-serif;font-size:22px;color:var(--g1)" id="rod-total-val">0원</div>
+        <div style="font-size:11px;color:var(--mu);margin-top:3px">장난감 예산 <span id="rod-toy-budget" style="color:var(--g1)"></span> + 낚시대 <span id="rod-rod-sum" style="color:var(--g1)"></span></div>
+      </div>
+      <button class="btn bp" onclick="showResult()" style="margin-top:14px">🎁 추천 결과 보기</button>
+      <button class="btn bg" onclick="go('budget')">← 이전</button>
     </div>
   </div>
 </div>
 
 <!-- RESULT -->
 <div class="scr" id="s-res">
-  <div class="rh">
-    <div style="font-size:54px">🎉</div>
-    <h2 id="res-ttl">추천 장난감</h2>
-    <div class="cps" id="res-cp"></div>
+  <!-- 캡처 대상 영역 (버튼 제외) -->
+  <div id="capture-area" style="width:100%;max-width:440px;padding:20px 0 10px">
+    <div class="rh">
+      <div style="font-size:54px">🎉</div>
+      <h2 id="res-ttl">추천 장난감</h2>
+      <div class="cps" id="res-cp"></div>
+    </div>
+    <!-- 추천 개수 선택 -->
+    <div style="display:flex;gap:7px;margin-bottom:14px;justify-content:center">
+      <button class="rcnt-btn" data-cnt="4" onclick="setRecCount(4)" style="background:rgba(255,255,255,.08);border:1px solid var(--border);border-radius:20px;color:var(--mu);padding:6px 16px;cursor:pointer;font-family:Jua,sans-serif;font-size:13px">4개 보기</button>
+      <button class="rcnt-btn" data-cnt="10" onclick="setRecCount(10)" style="background:rgba(255,217,61,.18);border:1.5px solid var(--g1);border-radius:20px;color:var(--g1);padding:6px 16px;cursor:pointer;font-family:Jua,sans-serif;font-size:13px">10개 보기</button>
+      <button class="rcnt-btn" data-cnt="16" onclick="setRecCount(16)" style="background:rgba(255,255,255,.08);border:1px solid var(--border);border-radius:20px;color:var(--mu);padding:6px 16px;cursor:pointer;font-family:Jua,sans-serif;font-size:13px">16개 보기</button>
+    </div>
+    <div id="res-rod-box" style="width:100%"></div>
+    <div id="res-cards" style="width:100%"></div>
   </div>
-  <div id="res-cards" style="width:100%;max-width:440px"></div>
-  <div class="ra">
-    <button class="btn bp" onclick="restart()">🔄 다시 테스트</button>
-    <a class="btn bp" id="store-all" href="https://smartstore.naver.com/avivi" target="_blank">🏪 전체 상품</a>
+  <!-- 버튼 영역 (캡처 제외) -->
+  <div style="width:100%;max-width:440px;display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px">
+    <button class="btn bp" onclick="restart()" style="margin-top:0">🔄 다시 테스트</button>
+    <a class="btn bp" id="store-all" href="https://smartstore.naver.com/avivi" target="_blank" style="margin-top:0;display:flex;align-items:center;justify-content:center">🏪 전체 상품</a>
+    <button class="btn" onclick="shareKakao()" style="margin-top:0;background:linear-gradient(135deg,#FEE500,#FFCD00);color:#3A1D1D;font-family:Jua,sans-serif;font-size:14px">💬 카카오 공유</button>
+    <button class="btn" onclick="captureResult()" style="margin-top:0;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-family:Jua,sans-serif;font-size:14px">📸 결과 저장</button>
   </div>
+  <div style="height:32px"></div>
 </div>
 
 <!-- ADMIN LOGIN -->
@@ -273,10 +339,45 @@ input[type=range]{width:100%;accent-color:var(--g1);cursor:pointer;height:6px}
     <button class="atb" onclick="swTab('t-notice',this)">📢 공지</button>
     <button class="atb" onclick="swTab('t-logo',this)">🖼️ 로고</button>
     <button class="atb" onclick="swTab('t-pw',this)">🔑 비밀번호</button>
+    <button class="atb" onclick="swTab('t-tags',this)">✏️ 태그편집</button>
+    <button class="atb" onclick="swTab('t-rod',this)">🎣 낚시대</button>
+    <button class="atb" onclick="swTab('t-stats',this)">📊 통계</button>
   </div>
 
   <!-- PRODUCTS -->
   <div class="atc on" id="t-prod">
+
+    <!-- CSV/엑셀 일괄 업로드 -->
+    <div class="asec" style="border-color:#4ECDC4">
+      <div class="ast" style="color:#4ECDC4">📊 엑셀/CSV 일괄 업로드</div>
+      <div style="font-size:11px;color:#9ca3af;margin-bottom:12px;line-height:1.7">
+        엑셀이나 CSV 파일로 상품을 한 번에 Firebase에 추가해요!<br>
+        <strong style="color:#4ECDC4">필수 열:</strong> 상품명, 가격, URL, 태그, 설명, 이미지URL
+      </div>
+      <button onclick="downloadTemplate()" style="background:rgba(78,205,196,0.15);border:1px solid #4ECDC4;border-radius:9px;color:#4ECDC4;padding:9px 16px;cursor:pointer;font-size:12px;font-family:Jua,sans-serif;margin-bottom:12px;width:100%">
+        📥 엑셀 템플릿 다운로드
+      </button>
+      <div class="af">
+        <label>CSV 또는 엑셀 파일 선택 (.csv / .xlsx / .xls)</label>
+        <input type="file" accept=".csv,.xlsx,.xls" id="csv-file" onchange="handleCsvUpload(this)" style="color:#fff;font-size:12px"/>
+      </div>
+      <div id="csv-loading" style="display:none;text-align:center;padding:12px;color:#9ca3af;font-size:12px">⏳ 파일 읽는 중...</div>
+      <div id="csv-error" style="display:none;margin-top:10px;padding:10px;background:rgba(233,69,96,0.1);border:1px solid #e94560;border-radius:8px;color:#e94560;font-size:12px;line-height:1.6;white-space:pre-line"></div>
+      <div id="csv-preview" style="display:none;margin-top:12px">
+        <div style="font-size:12px;color:#4ECDC4;margin-bottom:8px;font-family:Jua,sans-serif" id="csv-preview-title"></div>
+        <div style="overflow-x:auto;border-radius:8px;border:1px solid #374151;max-height:200px;overflow-y:auto">
+          <table id="csv-table" style="width:100%;border-collapse:collapse;font-size:11px">
+            <thead id="csv-thead" style="background:#111827;position:sticky;top:0"></thead>
+            <tbody id="csv-tbody"></tbody>
+          </table>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button onclick="confirmCsvUpload()" style="background:linear-gradient(135deg,#4ECDC4,#2bb5ac);border:none;border-radius:9px;color:#1a1a2e;padding:9px 18px;cursor:pointer;font-family:Jua,sans-serif;font-size:13px;font-weight:bold">✓ Firebase에 전체 추가</button>
+          <button onclick="cancelCsvUpload()" style="background:#374151;border:none;border-radius:8px;color:#fff;padding:9px 14px;cursor:pointer;font-size:12px">취소</button>
+        </div>
+      </div>
+    </div>
+
     <div class="asec" style="border-color:#FFD93D">
       <div class="ast">⚡ 빠른 상품 추가</div>
       <div style="font-size:11px;color:#9ca3af;margin-bottom:12px;line-height:1.6">
@@ -299,6 +400,7 @@ input[type=range]{width:100%;accent-color:var(--g1);cursor:pointer;height:6px}
       </div>
       <button class="asb" onclick="addProduct()">Firebase에 저장 ✓</button>
     </div>
+
     <div style="font-family:Jua,sans-serif;color:var(--g1);font-size:15px;margin-bottom:10px">📋 등록된 상품 목록</div>
     <div id="plist"></div>
   </div>
@@ -372,6 +474,105 @@ input[type=range]{width:100%;accent-color:var(--g1);cursor:pointer;height:6px}
       <div class="nt">⚠️ 비밀번호를 잊으면 복구가 어렵습니다. 반드시 기억해두세요!</div>
     </div>
   </div>
+
+  <!-- TAG EDITOR -->
+  <div class="atc" id="t-tags">
+    <!-- 재질 편집 -->
+    <div class="asec" style="border-color:#4ECDC4">
+      <div class="ast" style="color:#4ECDC4">🪶 재질 목록 편집</div>
+      <div style="font-size:11px;color:#9ca3af;margin-bottom:12px;line-height:1.6">재질을 추가/삭제할 수 있어요. 상품 태그와 일치해야 추천이 돼요!</div>
+      <div id="mats-list" style="margin-bottom:12px"></div>
+      <div style="display:flex;gap:8px;align-items:flex-start">
+        <input type="text" id="new-mat-n" placeholder="재질 이름 (예: 고무)" style="flex:1;font-size:12px"/>
+        <input type="text" id="new-mat-i" placeholder="이모지" style="width:56px;font-size:12px;text-align:center"/>
+        <button onclick="addMat()" style="background:linear-gradient(135deg,#4ECDC4,#2bb5ac);border:none;border-radius:9px;color:#1a1a2e;padding:9px 14px;cursor:pointer;font-family:Jua,sans-serif;font-size:12px;white-space:nowrap;flex-shrink:0">+ 추가</button>
+      </div>
+      <button class="asb" style="background:linear-gradient(135deg,#4ECDC4,#2bb5ac);color:#1a1a2e;margin-top:12px" onclick="saveMats()">재질 저장 → Firebase ✓</button>
+    </div>
+    <!-- 성격 편집 -->
+    <div class="asec" style="border-color:#C77DFF">
+      <div class="ast" style="color:#C77DFF">😺 성격 목록 편집</div>
+      <div style="font-size:11px;color:#9ca3af;margin-bottom:12px;line-height:1.6">성격을 추가/삭제할 수 있어요. 설명도 함께 수정 가능해요!</div>
+      <div id="pers-list" style="margin-bottom:12px"></div>
+      <div style="display:grid;grid-template-columns:1fr 56px 1fr;gap:8px;align-items:flex-start">
+        <input type="text" id="new-pers-n" placeholder="성격 이름 (예: 사교적인)" style="font-size:12px"/>
+        <input type="text" id="new-pers-i" placeholder="😊" style="font-size:12px;text-align:center"/>
+        <input type="text" id="new-pers-d" placeholder="설명 (예: 사람을 좋아해요)" style="font-size:12px"/>
+      </div>
+      <button onclick="addPers()" style="background:linear-gradient(135deg,#C77DFF,#9b5de5);border:none;border-radius:9px;color:#fff;padding:9px 14px;cursor:pointer;font-family:Jua,sans-serif;font-size:12px;margin-top:8px;width:100%">+ 성격 추가</button>
+      <button class="asb" style="background:linear-gradient(135deg,#C77DFF,#9b5de5);color:#fff;margin-top:8px" onclick="savePers()">성격 저장 → Firebase ✓</button>
+    </div>
+  </div>
+
+  <!-- ROD ADMIN TAB -->
+  <div class="atc" id="t-rod">
+    <div class="asec" style="border-color:#FF6B6B">
+      <div class="ast" style="color:#FF6B6B">🎣 낚시대/막대 목록 관리</div>
+      <div style="font-size:11px;color:#9ca3af;margin-bottom:14px;line-height:1.7">
+        사용자가 선택할 수 있는 낚시대/막대를 추가·삭제해요.<br>
+        <strong style="color:#FF6B6B">가격</strong>을 입력하면 장난감 예산과 합산돼요!
+      </div>
+      <div id="rod-admin-list" style="margin-bottom:14px"></div>
+      <!-- 새 낚시대 추가 -->
+      <div style="background:#111827;border-radius:10px;padding:12px;border:1px solid #374151">
+        <div style="font-size:12px;color:#9ca3af;margin-bottom:10px;font-family:Jua,sans-serif">➕ 새 낚시대 추가</div>
+        <div class="ag">
+          <div class="af"><label>이름 *</label><input type="text" id="new-rod-n" placeholder="예) 40cm 깃털 낚싯대"/></div>
+          <div class="af"><label>가격 (원)</label><input type="number" id="new-rod-p" placeholder="5000" min="0"/></div>
+          <div class="af afc"><label>설명</label><input type="text" id="new-rod-d" placeholder="예) 40cm 길이의 깃털 낚싯대"/></div>
+          <div class="af"><label>이모지/아이콘</label><input type="text" id="new-rod-i" placeholder="🎣" style="text-align:center"/></div>
+          <div class="af"><label>이미지 URL (선택)</label><input type="text" id="new-rod-img" placeholder="https://..."/></div>
+        </div>
+        <button onclick="addRod()" style="background:linear-gradient(135deg,#FF6B6B,#e94560);border:none;border-radius:9px;color:#fff;padding:9px 18px;cursor:pointer;font-family:Jua,sans-serif;font-size:13px;margin-top:10px;width:100%">+ 낚시대 추가</button>
+      </div>
+      <button class="asb" style="background:linear-gradient(135deg,#FF6B6B,#e94560);color:#fff;margin-top:10px" onclick="saveRods()">저장 → Firebase ✓</button>
+    </div>
+  </div>
+
+  <!-- STATS TAB -->
+  <div class="atc" id="t-stats">
+    <div class="asec">
+      <div class="ast">📊 방문자 통계</div>
+      <div id="stats-loading" style="text-align:center;padding:20px;color:#9ca3af;font-size:13px">⏳ 통계 불러오는 중...</div>
+      <div id="stats-content" style="display:none">
+        <!-- 요약 카드 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+          <div style="background:#111827;border-radius:10px;padding:14px;text-align:center;border:1px solid #374151">
+            <div style="font-size:11px;color:#9ca3af;margin-bottom:4px">총 방문자</div>
+            <div style="font-family:Jua,sans-serif;font-size:26px;color:var(--g1)" id="stat-total">0</div>
+          </div>
+          <div style="background:#111827;border-radius:10px;padding:14px;text-align:center;border:1px solid #374151">
+            <div style="font-size:11px;color:#9ca3af;margin-bottom:4px">오늘 방문자</div>
+            <div style="font-family:Jua,sans-serif;font-size:26px;color:#4ECDC4" id="stat-today">0</div>
+          </div>
+          <div style="background:#111827;border-radius:10px;padding:14px;text-align:center;border:1px solid #374151">
+            <div style="font-size:11px;color:#9ca3af;margin-bottom:4px">테스트 완료</div>
+            <div style="font-family:Jua,sans-serif;font-size:26px;color:#C77DFF" id="stat-tests">0</div>
+          </div>
+          <div style="background:#111827;border-radius:10px;padding:14px;text-align:center;border:1px solid #374151">
+            <div style="font-size:11px;color:#9ca3af;margin-bottom:4px">스토어 클릭</div>
+            <div style="font-family:Jua,sans-serif;font-size:26px;color:#03C75A" id="stat-clicks">0</div>
+          </div>
+        </div>
+        <!-- 인기 성격 -->
+        <div style="background:#111827;border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid #374151">
+          <div style="font-size:12px;color:#9ca3af;margin-bottom:10px;font-family:Jua,sans-serif">🏆 인기 성격 TOP 3</div>
+          <div id="stat-pers-rank"></div>
+        </div>
+        <!-- 인기 재질 -->
+        <div style="background:#111827;border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid #374151">
+          <div style="font-size:12px;color:#9ca3af;margin-bottom:10px;font-family:Jua,sans-serif">🪶 인기 재질 TOP 3</div>
+          <div id="stat-mat-rank"></div>
+        </div>
+        <!-- 평균 예산 -->
+        <div style="background:#111827;border-radius:10px;padding:14px;border:1px solid #374151">
+          <div style="font-size:12px;color:#9ca3af;margin-bottom:6px;font-family:Jua,sans-serif">💰 평균 예산</div>
+          <div style="font-family:Jua,sans-serif;font-size:22px;color:var(--g1)" id="stat-avg-budget">-</div>
+        </div>
+      </div>
+      <button onclick="loadStats()" style="background:#374151;border:none;border-radius:8px;color:#fff;padding:8px 14px;cursor:pointer;font-size:12px;margin-top:12px;width:100%">🔄 새로고침</button>
+    </div>
+  </div>
 </div>
 </div>
 
@@ -419,13 +620,29 @@ let uploadedImgData = "";
 let editId = null;
 
 const EM = {"깃털":"🪶","비닐":"🛍️","폼폼이":"🎾","실리콘":"🔵","끈":"🧵","천":"🧶","종이":"📄","나무":"🪵"};
-const MATS = [{n:"깃털",i:"🪶"},{n:"비닐",i:"🛍️"},{n:"폼폼이",i:"🎾"},{n:"실리콘",i:"🔵"},{n:"끈",i:"🧵"},{n:"천",i:"🧶"},{n:"종이",i:"📄"},{n:"나무",i:"🪵"}];
-const PERS = [{n:"활발한",i:"⚡",d:"뛰고 점프하는 걸 좋아해요"},{n:"진지한",i:"🧐",d:"차분하고 신중해요"},{n:"호기심많은",i:"👀",d:"뭐든 살펴보고 탐험해요"},{n:"겁쟁이",i:"🙈",d:"새로운 것에 조심스러워요"},{n:"식탐이많은",i:"🍗",d:"먹는 것에 관심이 많아요"},{n:"게으른",i:"💤",d:"낮잠을 즐겨요"}];
+let MATS = [{n:"깃털",i:"🪶"},{n:"비닐",i:"🛍️"},{n:"폼폼이",i:"🎾"},{n:"실리콘",i:"🔵"},{n:"끈",i:"🧵"},{n:"천",i:"🧶"},{n:"종이",i:"📄"},{n:"나무",i:"🪵"}];
+let PERS = [{n:"활발한",i:"⚡",d:"뛰고 점프하는 걸 좋아해요"},{n:"진지한",i:"🧐",d:"차분하고 신중해요"},{n:"호기심많은",i:"👀",d:"뭐든 살펴보고 탐험해요"},{n:"겁쟁이",i:"🙈",d:"새로운 것에 조심스러워요"},{n:"식탐이많은",i:"🍗",d:"먹는 것에 관심이 많아요"},{n:"게으른",i:"💤",d:"낮잠을 즐겨요"}];
 
 function pe(p){for(const t of p.tags){if(EM[t])return EM[t];}return"🐱";}
+
+// 네이버 이미지 CORS 우회 — 프록시 URL 변환
+function proxyImg(url){
+  if(!url) return '';
+  // base64 이미지는 그대로 사용
+  if(url.startsWith('data:')) return url;
+  // 네이버 계열 이미지 → 프록시 경유
+  if(url.includes('pstatic.net') || url.includes('naver.com') ||
+     url.includes('naver.net') || url.includes('shopping.naver')){
+    return 'https://images.weserv.nl/?url=' + encodeURIComponent(url) + '&w=300&output=webp';
+  }
+  return url;
+}
+
 function th(p){
   if(!p.image) return pe(p);
-  return `<img src="${p.image}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit" onerror="this.parentElement.innerHTML='${pe(p)}'">`;
+  const src = proxyImg(p.image);
+  const fallback = pe(p);
+  return `<img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit" onerror="this.src='${p.image}';this.onerror=()=>{this.parentElement.innerHTML='${fallback}';}">`;
 }
 
 // ── Firebase 초기화: 앱 설정 + 상품 로드 ──
@@ -441,7 +658,19 @@ async function initFirebase(){
       await setDoc(doc(db,"config","app"), CFG);
     }
 
-    // 2) 상품 로드
+    // 2) 태그(재질/성격) 로드
+    const tagSnap = await getDoc(doc(db,"config","tags"));
+    if(tagSnap.exists()){
+      const td = tagSnap.data();
+      if(td.mats && td.mats.length) MATS = td.mats;
+      if(td.pers && td.pers.length) PERS = td.pers;
+    } else {
+      await setDoc(doc(db,"config","tags"),{mats:MATS, pers:PERS});
+    }
+    // RODS는 config/app 문서에서 로드
+    if(CFG.rods && CFG.rods.length) RODS = CFG.rods;
+
+    // 3) 상품 로드
     const prodSnap = await getDocs(collection(db,"products"));
     if(prodSnap.empty){
       // 최초 실행: 기본 상품 저장
@@ -465,7 +694,16 @@ async function initFirebase(){
       }
     });
 
-    // 4) 실시간 리스닝 — products 변경 감지
+    // 4) 실시간 리스닝 — tags 변경 감지
+    onSnapshot(doc(db,"config","tags"), snap=>{
+      if(snap.exists()){
+        const td=snap.data();
+        if(td.mats && td.mats.length) MATS=td.mats;
+        if(td.pers && td.pers.length) PERS=td.pers;
+      }
+    });
+
+    // 5) 실시간 리스닝 — products 변경 감지
     onSnapshot(collection(db,"products"), snap=>{
       PRODS = snap.docs.map(d=>({id:d.id,...d.data()}));
       if(document.getElementById('plist')) rPlist();
@@ -502,6 +740,7 @@ function setSyncStatus(state){
 }
 
 function applyConfig(){
+  if(CFG.rods && CFG.rods.length) RODS = CFG.rods;
   // 로고
   const logoEl = document.getElementById('logo-el');
   if(logoEl && CFG.logo){ logoEl.src = CFG.logo; logoEl.style.display="block"; document.getElementById('logo-txt').style.display="none"; }
@@ -531,14 +770,16 @@ window.go = function(id){
   if(id==='age') rAge();
   if(id==='mat') rMat();
   if(id==='pers') rPers();
+  if(id==='budget'){ CAT.budget = CAT.budget||14000; window.rBudget(); }
+  if(id==='rod') rRodScreen();
   rProg(id);
 };
 
 window.rProg = function(id){
-  const steps={name:1,age:2,mat:3,pers:4};
+  const steps={name:1,age:2,mat:3,pers:4,budget:5,rod:6};
   const step=steps[id]; if(!step)return;
   const el=document.getElementById('pg-'+id); if(!el)return;
-  el.innerHTML=[1,2,3,4].map(i=>`<div class="pd ${i===step?'a':i<step?'d':''}" style="width:${i===step?28:10}px"></div>`).join('');
+  el.innerHTML=[1,2,3,4,5,6].map(i=>`<div class="pd ${i===step?'a':i<step?'d':''}" style="width:${i===step?26:9}px"></div>`).join('');
 };
 
 // ── STEP 1: 이름/성별 ──
@@ -590,24 +831,122 @@ window.rPers = function(){
 };
 window.selP = function(p){CAT.pers=p;window.rPers();};
 
+// ── STEP 5: 예산 ──
+const BUDGET_PRESETS = [
+  {v:5000,  lbl:"5천원"},
+  {v:10000, lbl:"1만원"},
+  {v:14000, lbl:"14,000원"},
+  {v:20000, lbl:"2만원"},
+  {v:30000, lbl:"3만원"},
+  {v:50000, lbl:"5만원"},
+];
+
+function fmtPrice(v){return Number(v).toLocaleString()+'원';}
+function budgetLabel(v){
+  if(v<=6000) return "알뜰하게 골라요 💸";
+  if(v<=10000) return "가볍게 즐길 수 있어요 👍";
+  if(v<=16000) return "적당한 가격대예요 😊";
+  if(v<=25000) return "조금 특별한 장난감이에요 ✨";
+  if(v<=35000) return "프리미엄 장난감이에요 👑";
+  return "최고급 장난감으로 골라요 🏆";
+}
+
+window.rBudget = function(){
+  const v = CAT.budget || 14000;
+  document.getElementById('budget-sl').value = v;
+  document.getElementById('budget-val').textContent = fmtPrice(v);
+  document.getElementById('budget-range-lbl').textContent = budgetLabel(v);
+  document.getElementById('budget-quick').innerHTML = BUDGET_PRESETS.map(p=>
+    `<button class="aqb ${CAT.budget===p.v?'s':''}" onclick="updBudget(${p.v})">${p.lbl}</button>`
+  ).join('');
+};
+
+window.updBudget = function(v){
+  CAT.budget = parseInt(v);
+  document.getElementById('budget-val').textContent = fmtPrice(v);
+  document.getElementById('budget-range-lbl').textContent = budgetLabel(v);
+  document.getElementById('budget-sl').value = v;
+  document.querySelectorAll('#budget-quick .aqb').forEach(b=>{
+    b.classList.toggle('s', parseInt(b.dataset.val||'0')===CAT.budget);
+  });
+  document.getElementById('budget-quick').innerHTML = BUDGET_PRESETS.map(p=>
+    `<button class="aqb ${CAT.budget===p.v?'s':''}" onclick="updBudget(${p.v})">${p.lbl}</button>`
+  ).join('');
+};
+
 // ── 결과 ──
 function atag(a){return a<=1?"젊은":a<=7?"중년":"노령";}
+
+// 가격 문자열 → 숫자 변환 (예: "12,900원" → 12900)
+function parsePrice(priceStr){
+  if(!priceStr) return null;
+  const n = parseInt(priceStr.replace(/[^0-9]/g,''));
+  return isNaN(n) ? null : n;
+}
+
+// 가격 표시 포맷 (예: "12900" → "12,900원", "12,900원" → "12,900원")
+function formatPrice(priceStr){
+  if(!priceStr) return '';
+  const n = parsePrice(priceStr);
+  if(n === null) return priceStr;
+  // 이미 "원"이 있으면 숫자 부분만 포맷해서 반환
+  return n.toLocaleString() + '원';
+}
+
 function getRecs(){
   const at=atag(CAT.age);
   const pt=CAT.pers==="활발한"?["활발한","호기심많은"]:CAT.pers==="호기심많은"?["호기심많은","활발한"]:CAT.pers==="게으른"?["진지한"]:["진지한",CAT.pers];
-  return PRODS.map(p=>{
+  // 낚시대 가격 차감 후 남은 장난감 예산
+  const rodSum = getRodSum();
+  const budget = Math.max((CAT.budget || 14000) - rodSum, 1000);
+  const margin = 0.5;
+
+  let scored = PRODS.map(p=>{
     let s=0;
     if(p.tags&&p.tags.includes(at)) s+=3;
     CAT.mats.forEach(m=>{if(p.tags&&p.tags.includes(m)) s+=2;});
     pt.forEach(t=>{if(p.tags&&p.tags.includes(t)) s+=2;});
-    return {...p,score:s};
-  }).filter(p=>p.score>0).sort((a,b)=>b.score-a.score).slice(0,4);
+    const price = parsePrice(p.price);
+    if(price !== null){
+      const diff = Math.abs(price - budget) / budget;
+      if(diff <= 0.15) s += 4;
+      else if(diff <= 0.3) s += 3;
+      else if(diff <= margin) s += 1;
+    }
+    return {...p, score:s, parsedPrice: price};
+  }).filter(p=>p.score>0).sort((a,b)=>b.score-a.score);
+  return scored.slice(0, window._recCount||4);
 }
 window.showResult = function(){
   const recs=getRecs();
   document.getElementById('res-ttl').textContent=`${CAT.name}(이)의 추천 장난감`;
-  document.getElementById('res-cp').innerHTML=[CAT.gender,CAT.age+'살',CAT.pers,...CAT.mats].map(c=>`<span class="cp">${c}</span>`).join('');
+  const rodSum = getRodSum();
+  const selRodNames = RODS.filter(r=>CAT.rods&&CAT.rods.includes(r.id)).map(r=>r.name);
+  const chips = [CAT.gender, CAT.age+'살', CAT.pers, ...CAT.mats, '예산 '+Number(CAT.budget||14000).toLocaleString()+'원'];
+  if(selRodNames.length) chips.push('🎣 낚시대 '+selRodNames.length+'개');
+  document.getElementById('res-cp').innerHTML = chips.map(c=>`<span class="cp">${c}</span>`).join('');
   document.getElementById('store-all').href=CFG.url||"https://smartstore.naver.com/avivi";
+
+  // 낚시대 선택 요약 박스
+  let rodBox = '';
+  if(selRodNames.length){
+    rodBox = `<div style="width:100%;max-width:440px;margin-bottom:14px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.35);border-radius:14px;padding:12px 16px">
+      <div style="font-family:Jua,sans-serif;font-size:14px;color:#FF6B6B;margin-bottom:6px">🎣 선택한 낚시대</div>
+      ${RODS.filter(r=>CAT.rods&&CAT.rods.includes(r.id)).map(r=>`
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px">
+          <span>${r.icon||'🎣'} ${r.name}</span>
+          <span style="color:var(--g1);font-family:Jua,sans-serif">${Number(r.price||0).toLocaleString()}원</span>
+        </div>`).join('')}
+    };
+        <span style="color:#FF6B6B">${Number(rodSum).toLocaleString()}원</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-family:Jua,sans-serif;font-size:13px;margin-top:4px">
+        <span style="color:var(--mu)">남은 장난감 예산</span>
+        <span style="color:var(--g1)">${Number(Math.max((CAT.budget||14000)-rodSum,0)).toLocaleString()}원</span>
+      </div>
+    </div>`;
+  }
+  document.getElementById('res-rod-box').innerHTML = rodBox;
   if(!recs.length){
     document.getElementById('res-cards').innerHTML=`<div class="pc" style="text-align:center;padding:30px"><div style="font-size:46px">😿</div><p style="margin-top:10px;color:var(--mu)">조건에 맞는 상품이 없어요.<br>다시 테스트해보세요!</p></div>`;
   } else {
@@ -619,17 +958,21 @@ window.showResult = function(){
           <div class="pif">
             <div class="pn2">${p.name}</div>
             <div class="pde">${p.description||''}</div>
-            <div class="ppr">${p.price||''}</div>
+            <div class="ppr">${formatPrice(p.price)}</div>
           </div>
         </div>
         <div class="ptgs">${(p.tags||[]).map(t=>`<span class="ptg">#${t}</span>`).join('')}</div>
-        <a class="btn bgr" href="${p.storeUrl||CFG.url}" target="_blank" style="margin-top:10px">🛒 스마트스토어에서 보기</a>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <a class="btn bgr" href="${p.storeUrl||CFG.url}" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;margin-top:0" onclick="recordStoreClick()">🛒 상품 보기</a>
+          <a class="btn" href="${cartUrl(p)}" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;margin-top:0;background:linear-gradient(135deg,#FF6B6B,#e94560);color:#fff;font-family:Jua,sans-serif;font-size:14px" onclick="recordStoreClick()">🛍️ 장바구니</a>
+        </div>
       </div>`).join('');
   }
   go('res');
+  recordTest(CAT);
 };
 window.restart = function(){
-  CAT={name:"",gender:"",age:1,mats:[],pers:""};
+  CAT={name:"",gender:"",age:1,mats:[],pers:"",budget:14000,rods:[],rodSkip:false};
   document.getElementById('cat-name').value='';
   document.getElementById('gm').classList.remove('s');
   document.getElementById('gf').classList.remove('s');
@@ -663,13 +1006,16 @@ window.swTab = function(tid,btn){
   document.querySelectorAll('.atc').forEach(c=>c.classList.remove('on'));
   btn.classList.add('on');
   document.getElementById(tid).classList.add('on');
+  if(tid==='t-tags'){ renderMatsList(); renderPersList(); }
+  if(tid==='t-rod'){ renderRodAdmin(); }
+  if(tid==='t-stats'){ loadStats(); }
 };
 
 // ── 상품 관리 (Firebase CRUD) ──
 window.prevQI = function(){
   const url=document.getElementById('qi-img').value.trim();
   const p=document.getElementById('qi-iprev');
-  if(url){p.src=url;p.style.display='block';p.onerror=()=>{p.style.display='none';};}
+  if(url){p.src=proxyImg(url);p.style.display='block';p.onerror=()=>{p.src=url;p.onerror=()=>{p.style.display='none';}};}
   else p.style.display='none';
 };
 window.uploadImgFile = function(input){
@@ -710,14 +1056,45 @@ function rPlist(){
   document.getElementById('plist').innerHTML=PRODS.map(p=>{
     let editHtml='';
     if(editId===p.id){
+      const hasImg = p.image && p.image.length > 0;
       editHtml=`<div class="ef">
         <div class="ag" style="margin-bottom:9px">
           <div class="af"><label>상품명</label><input type="text" id="ep-n" value="${p.name}"/></div>
           <div class="af"><label>가격</label><input type="text" id="ep-p" value="${p.price||''}"/></div>
           <div class="af afc"><label>URL</label><input type="text" id="ep-u" value="${p.storeUrl||''}"/></div>
-          <div class="af afc"><label>이미지URL</label><input type="text" id="ep-img" value="${p.image&&!p.image.startsWith('data:')?p.image:''}"/></div>
           <div class="af afc"><label>태그</label><input type="text" id="ep-t" value="${(p.tags||[]).join(', ')}"/></div>
           <div class="af afc"><label>설명</label><textarea id="ep-d" rows="2">${p.description||''}</textarea></div>
+
+          <!-- 이미지 섹션 -->
+          <div class="af afc" style="background:#111827;border-radius:10px;padding:12px;border:1px solid #374151">
+            <label style="color:#4ECDC4;font-family:Jua,sans-serif;font-size:12px;margin-bottom:8px;display:block">🖼️ 상품 이미지</label>
+
+            <!-- 현재 이미지 미리보기 -->
+            <div id="ep-img-preview-wrap" style="${hasImg?'':'display:none'}margin-bottom:10px">
+              <div style="font-size:11px;color:#9ca3af;margin-bottom:5px">현재 이미지</div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <img id="ep-img-preview" src="${hasImg?proxyImg(p.image):''}" style="width:72px;height:72px;object-fit:cover;border-radius:8px;background:#222" onerror="this.src='${hasImg?p.image:''}';this.onerror=()=>{this.style.display='none';}"/>
+                <button onclick="delProdImg('${p.id}')" style="background:rgba(233,69,96,.15);border:1px solid #e94560;border-radius:7px;color:#e94560;padding:6px 12px;cursor:pointer;font-size:12px">🗑️ 이미지 삭제</button>
+              </div>
+            </div>
+
+            <!-- 이미지 URL 입력 -->
+            <div style="margin-bottom:8px">
+              <label style="font-size:11px;color:#9ca3af;display:block;margin-bottom:4px">이미지 URL 입력</label>
+              <div style="display:flex;gap:6px">
+                <input type="text" id="ep-img" placeholder="https://shop-phinf.pstatic.net/..." style="flex:1;font-size:12px" oninput="prevEpImg()"/>
+                <button onclick="applyEpImgUrl()" style="background:#1f2937;border:1px solid #4ECDC4;border-radius:7px;color:#4ECDC4;padding:6px 10px;cursor:pointer;font-size:11px;white-space:nowrap">적용</button>
+              </div>
+              <img id="ep-url-preview" style="width:56px;height:56px;object-fit:cover;border-radius:7px;margin-top:6px;display:none"/>
+            </div>
+
+            <!-- 이미지 파일 업로드 -->
+            <div>
+              <label style="font-size:11px;color:#9ca3af;display:block;margin-bottom:4px">또는 파일 직접 업로드</label>
+              <input type="file" accept="image/*" id="ep-img-file" onchange="uploadEpImg(this)" style="color:#fff;font-size:11px"/>
+              <img id="ep-file-preview" style="width:56px;height:56px;object-fit:cover;border-radius:7px;margin-top:6px;display:none"/>
+            </div>
+          </div>
         </div>
         <div style="display:flex;gap:7px">
           <button onclick="saveEd('${p.id}')" class="asb" style="margin-top:0;font-size:12px">💾 Firebase 저장</button>
@@ -732,19 +1109,83 @@ function rPlist(){
     </div>${editHtml}`;
   }).join('');
 }
-window.startEd = function(id){editId=id;rPlist();};
-window.cancelEd = function(){editId=null;rPlist();};
+window.startEd = function(id){
+  editId=id;
+  editImgData='';
+  rPlist();
+};
+window.cancelEd = function(){editId=null; editImgData=''; rPlist();};
+
+// 이미지 URL 미리보기
+window.prevEpImg = function(){
+  const url = document.getElementById('ep-img')?.value.trim();
+  const prev = document.getElementById('ep-url-preview');
+  if(!prev) return;
+  if(url){ prev.src=proxyImg(url); prev.style.display='block'; prev.onerror=()=>{prev.src=url;prev.onerror=()=>{prev.style.display='none';};}; }
+  else prev.style.display='none';
+};
+
+// URL 적용 버튼
+window.applyEpImgUrl = function(){
+  const url = document.getElementById('ep-img')?.value.trim();
+  if(!url){ toast('URL을 입력해주세요!'); return; }
+  editImgData = url; // 원본 URL 저장 (프록시 아닌 원본)
+  const wrap = document.getElementById('ep-img-preview-wrap');
+  const prev = document.getElementById('ep-img-preview');
+  if(wrap && prev){ wrap.style.display='block'; prev.src=proxyImg(url); }
+  const fp = document.getElementById('ep-file-preview');
+  if(fp) fp.style.display='none';
+  toast('이미지 URL이 적용됐어요! 저장 버튼을 눌러주세요 ✓');
+};
+
+// 파일 업로드 미리보기
+let editImgData = '';
+window.uploadEpImg = function(input){
+  const f = input.files[0]; if(!f) return;
+  if(f.size > 2*1024*1024){ toast('2MB 이하 이미지를 사용해주세요!'); return; }
+  const r = new FileReader();
+  r.onloadend = ()=>{
+    editImgData = r.result;
+    const prev = document.getElementById('ep-file-preview');
+    if(prev){ prev.src=r.result; prev.style.display='block'; }
+    // URL 입력란 초기화
+    const urlInput = document.getElementById('ep-img');
+    if(urlInput) urlInput.value='';
+    const urlPrev = document.getElementById('ep-url-preview');
+    if(urlPrev) urlPrev.style.display='none';
+    // 현재 이미지 미리보기 업데이트
+    const wrap = document.getElementById('ep-img-preview-wrap');
+    const imgPrev = document.getElementById('ep-img-preview');
+    if(wrap && imgPrev){ wrap.style.display='block'; imgPrev.src=r.result; }
+    toast('이미지가 선택됐어요! 저장 버튼을 눌러주세요 ✓');
+  };
+  r.readAsDataURL(f);
+};
+
+// 이미지 삭제
+window.delProdImg = async function(id){
+  if(!confirm('이미지를 삭제할까요?')) return;
+  try{
+    await updateDoc(doc(db,'products',id),{image:''});
+    editImgData = '';
+    toast('이미지가 삭제됐어요!');
+    rPlist();
+  } catch(e){ toast('삭제 실패: '+e.message); }
+};
 window.saveEd = async function(id){
   try{
-    await updateDoc(doc(db,"products",id),{
-      name:document.getElementById('ep-n').value,
-      price:document.getElementById('ep-p').value,
-      storeUrl:document.getElementById('ep-u').value,
-      image:document.getElementById('ep-img').value.trim(),
-      tags:document.getElementById('ep-t').value.split(',').map(t=>t.trim()).filter(Boolean),
-      description:document.getElementById('ep-d').value,
-    });
-    editId=null; toast('Firebase에 저장됐어요! ✓');
+    // 이미지: 파일업로드 or URL입력 우선, 없으면 기존 유지
+    const imgVal = editImgData || document.getElementById('ep-img')?.value.trim() || undefined;
+    const updateData = {
+      name: document.getElementById('ep-n').value,
+      price: document.getElementById('ep-p').value,
+      storeUrl: document.getElementById('ep-u').value,
+      tags: document.getElementById('ep-t').value.split(',').map(t=>t.trim()).filter(Boolean),
+      description: document.getElementById('ep-d').value,
+    };
+    if(imgVal !== undefined) updateData.image = imgVal;
+    await updateDoc(doc(db,'products',id), updateData);
+    editId=null; editImgData=''; toast('Firebase에 저장됐어요! ✓');
   }catch(e){toast('저장 실패: '+e.message);}
 };
 window.delP = async function(id){
@@ -839,6 +1280,960 @@ window.chgPw = async function(){
   }catch(e){toast('저장 실패: '+e.message);}
 };
 
+// ── 태그 편집 (재질 / 성격) ──
+window.openAdmTags = function(){
+  renderMatsList();
+  renderPersList();
+};
+
+function renderMatsList(){
+  const el = document.getElementById('mats-list');
+  if(!el) return;
+  el.innerHTML = MATS.map((m,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;background:#111827;border-radius:8px;padding:8px 10px">
+      <span style="font-size:20px">${m.i}</span>
+      <input type="text" value="${m.n}" onchange="MATS[${i}].n=this.value" style="flex:1;font-size:12px;background:#1f2937;border:1px solid #374151;border-radius:6px;padding:5px 8px;color:#fff"/>
+      <input type="text" value="${m.i}" onchange="MATS[${i}].i=this.value;this.previousElementSibling.previousElementSibling.textContent=this.value" style="width:48px;font-size:12px;text-align:center;background:#1f2937;border:1px solid #374151;border-radius:6px;padding:5px 6px;color:#fff"/>
+      <button onclick="delMat(${i})" style="background:none;border:1px solid #e94560;border-radius:6px;color:#e94560;padding:4px 8px;cursor:pointer;font-size:11px;flex-shrink:0">삭제</button>
+    </div>`).join('');
+}
+
+function renderPersList(){
+  const el = document.getElementById('pers-list');
+  if(!el) return;
+  el.innerHTML = PERS.map((p,i)=>`
+    <div style="background:#111827;border-radius:8px;padding:9px 10px;margin-bottom:7px">
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px">
+        <span style="font-size:20px">${p.i}</span>
+        <input type="text" value="${p.n}" onchange="PERS[${i}].n=this.value" placeholder="성격명" style="flex:1;font-size:12px;background:#1f2937;border:1px solid #374151;border-radius:6px;padding:5px 8px;color:#fff"/>
+        <input type="text" value="${p.i}" onchange="PERS[${i}].i=this.value;this.parentElement.querySelector('span').textContent=this.value" placeholder="이모지" style="width:48px;font-size:12px;text-align:center;background:#1f2937;border:1px solid #374151;border-radius:6px;padding:5px 6px;color:#fff"/>
+        <button onclick="delPers(${i})" style="background:none;border:1px solid #e94560;border-radius:6px;color:#e94560;padding:4px 8px;cursor:pointer;font-size:11px;flex-shrink:0">삭제</button>
+      </div>
+      <input type="text" value="${p.d}" onchange="PERS[${i}].d=this.value" placeholder="설명" style="width:100%;font-size:11px;background:#1f2937;border:1px solid #374151;border-radius:6px;padding:5px 8px;color:#9ca3af"/>
+    </div>`).join('');
+}
+
+window.addMat = function(){
+  const n = document.getElementById('new-mat-n').value.trim();
+  const i = document.getElementById('new-mat-i').value.trim();
+  if(!n){ toast('재질 이름을 입력해주세요!'); return; }
+  MATS.push({n, i: i||'🏷️'});
+  document.getElementById('new-mat-n').value='';
+  document.getElementById('new-mat-i').value='';
+  renderMatsList();
+};
+window.delMat = function(idx){
+  if(MATS.length<=1){ toast('재질은 최소 1개 이상이어야 해요!'); return; }
+  MATS.splice(idx,1);
+  renderMatsList();
+};
+window.saveMats = async function(){
+  try{
+    await updateDoc(doc(db,"config","tags"),{mats:MATS});
+    toast('재질이 모든 기기에 반영됐어요! 🪶');
+  } catch(e){ toast('저장 실패: '+e.message); }
+};
+
+window.addPers = function(){
+  const n = document.getElementById('new-pers-n').value.trim();
+  const i = document.getElementById('new-pers-i').value.trim();
+  const d = document.getElementById('new-pers-d').value.trim();
+  if(!n){ toast('성격 이름을 입력해주세요!'); return; }
+  PERS.push({n, i: i||'😺', d: d||n});
+  document.getElementById('new-pers-n').value='';
+  document.getElementById('new-pers-i').value='';
+  document.getElementById('new-pers-d').value='';
+  renderPersList();
+};
+window.delPers = function(idx){
+  if(PERS.length<=1){ toast('성격은 최소 1개 이상이어야 해요!'); return; }
+  PERS.splice(idx,1);
+  renderPersList();
+};
+window.savePers = async function(){
+  try{
+    await updateDoc(doc(db,"config","tags"),{pers:PERS});
+    toast('성격이 모든 기기에 반영됐어요! 😺');
+  } catch(e){ toast('저장 실패: '+e.message); }
+};
+
+// ── 낚시대/막대 선택 ──
+let RODS = [
+  {id:'r1', name:'30cm 깃털 낚싯대', price:4000, desc:'가볍고 짧아서 좁은 공간에서도 OK', icon:'🪶'},
+  {id:'r2', name:'50cm 깃털 낚싯대', price:5500, desc:'가장 인기 있는 기본 낚싯대', icon:'🎣'},
+  {id:'r3', name:'70cm 깃털 낚싯대', price:7000, desc:'길어서 고양이가 더 신나게 뛰어요', icon:'🎣'},
+  {id:'r4', name:'끈 낚싯대 30cm', price:3500, desc:'끈 소재를 좋아하는 아이에게 추천', icon:'🧵'},
+  {id:'r5', name:'비닐 바스락 낚싯대', price:5000, desc:'바스락 소리로 사냥 본능 자극', icon:'🛍️'},
+  {id:'r6', name:'LED 빛 낚싯대', price:9000, desc:'어둠 속에서도 신나는 빛 장난감', icon:'✨'},
+];
+
+window.rRodScreen = function(){
+  const skipBtn = document.getElementById('rod-skip-btn');
+  if(skipBtn){
+    const skipped = CAT.rods && CAT.rods.length === 0 && CAT.rodSkip;
+    skipBtn.style.background = skipped ? 'rgba(255,217,61,.18)' : 'rgba(255,255,255,.08)';
+    skipBtn.style.borderColor = skipped ? 'var(--g1)' : 'var(--border)';
+    skipBtn.style.color = skipped ? 'var(--g1)' : 'var(--mu)';
+  }
+  renderRodList();
+  updRodTotal();
+};
+
+window.toggleRodSkip = function(){
+  CAT.rodSkip = !CAT.rodSkip;
+  if(CAT.rodSkip){ CAT.rods = []; }
+  window.rRodScreen();
+};
+
+function renderRodList(){
+  const el = document.getElementById('rod-list'); if(!el) return;
+  if(!RODS.length){
+    el.innerHTML = '<div style="text-align:center;color:var(--mu);font-size:13px;padding:20px">등록된 낚시대가 없어요.<br>관리자 패널에서 추가해주세요!</div>';
+    return;
+  }
+  el.innerHTML = RODS.map(r=>{
+    const sel = CAT.rods && CAT.rods.includes(r.id);
+    return `<div onclick="toggleRod('${r.id}')" style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:${sel?'rgba(255,217,61,.12)':'rgba(255,255,255,.06)'};border:1.5px solid ${sel?'var(--g1)':'var(--border)'};border-radius:14px;cursor:pointer;transition:all .2s">
+      <div style="font-size:28px;flex-shrink:0">${r.icon||'🎣'}</div>
+      <div style="flex:1">
+        <div style="font-family:Jua,sans-serif;font-size:14px;color:${sel?'var(--g1)':'var(--tx)'}">${r.name}</div>
+        <div style="font-size:11px;color:var(--mu);margin-top:2px">${r.desc||''}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:Jua,sans-serif;font-size:14px;color:var(--g1)">${Number(r.price||0).toLocaleString()}원</div>
+        <div style="font-size:18px;margin-top:2px">${sel?'✅':'⬜'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.toggleRod = function(id){
+  if(!CAT.rods) CAT.rods = [];
+  CAT.rodSkip = false;
+  if(CAT.rods.includes(id)) CAT.rods = CAT.rods.filter(x=>x!==id);
+  else CAT.rods.push(id);
+  window.rRodScreen();
+};
+
+function updRodTotal(){
+  const wrap = document.getElementById('rod-total-wrap'); if(!wrap) return;
+  const selRods = RODS.filter(r => CAT.rods && CAT.rods.includes(r.id));
+  const rodSum = selRods.reduce((s,r)=>s+(Number(r.price)||0), 0);
+  const toyBudget = CAT.budget || 14000;
+  if(selRods.length > 0){
+    wrap.style.display = 'block';
+    document.getElementById('rod-total-val').textContent = Number(toyBudget + rodSum).toLocaleString()+'원';
+    document.getElementById('rod-toy-budget').textContent = Number(toyBudget).toLocaleString()+'원';
+    document.getElementById('rod-rod-sum').textContent = Number(rodSum).toLocaleString()+'원';
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+// 낚시대 선택 반영한 추천 — getRecs() 내부에서 CAT.rods 참조
+// (총 예산 = 장난감 예산 - 낚시대 합산 가격)
+function getRodSum(){
+  if(!CAT.rods || !CAT.rods.length) return 0;
+  return RODS.filter(r=>CAT.rods.includes(r.id)).reduce((s,r)=>s+(Number(r.price)||0),0);
+}
+
+// ── 낚시대 관리자 ──
+function renderRodAdmin(){
+  const el = document.getElementById('rod-admin-list'); if(!el) return;
+  if(!RODS.length){
+    el.innerHTML = '<div style="text-align:center;color:#6b7280;font-size:12px;padding:12px">등록된 낚시대가 없어요.</div>';
+    return;
+  }
+  el.innerHTML = RODS.map((r,i)=>`
+    <div style="background:#111827;border-radius:9px;padding:11px 12px;margin-bottom:8px;border:1px solid #374151">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px">
+        <span style="font-size:22px">${r.icon||'🎣'}</span>
+        <div style="flex:1">
+          <input type="text" value="${r.name}" onchange="RODS[${i}].name=this.value" style="width:100%;background:#1f2937;border:1px solid #374151;border-radius:6px;padding:5px 8px;color:#fff;font-size:12px;font-family:inherit;margin-bottom:4px"/>
+          <div style="display:flex;gap:6px">
+            <input type="number" value="${r.price||0}" onchange="RODS[${i}].price=parseInt(this.value)||0" placeholder="가격" style="width:90px;background:#1f2937;border:1px solid #374151;border-radius:6px;padding:5px 8px;color:#FFD93D;font-size:12px;font-family:inherit"/>
+            <input type="text" value="${r.icon||'🎣'}" onchange="RODS[${i}].icon=this.value" placeholder="이모지" style="width:50px;background:#1f2937;border:1px solid #374151;border-radius:6px;padding:5px;color:#fff;font-size:14px;text-align:center;font-family:inherit"/>
+            <input type="text" value="${r.desc||''}" onchange="RODS[${i}].desc=this.value" placeholder="설명" style="flex:1;background:#1f2937;border:1px solid #374151;border-radius:6px;padding:5px 8px;color:#9ca3af;font-size:11px;font-family:inherit"/>
+          </div>
+        </div>
+        <button onclick="delRod(${i})" style="background:none;border:1px solid #e94560;border-radius:6px;color:#e94560;padding:4px 9px;cursor:pointer;font-size:11px;flex-shrink:0">삭제</button>
+      </div>
+    </div>`).join('');
+}
+
+window.addRod = function(){
+  const n = document.getElementById('new-rod-n').value.trim();
+  if(!n){ toast('낚시대 이름을 입력해주세요!'); return; }
+  RODS.push({
+    id: 'r'+Date.now(),
+    name: n,
+    price: parseInt(document.getElementById('new-rod-p').value)||0,
+    desc: document.getElementById('new-rod-d').value.trim(),
+    icon: document.getElementById('new-rod-i').value.trim()||'🎣',
+    image: document.getElementById('new-rod-img').value.trim(),
+  });
+  ['new-rod-n','new-rod-p','new-rod-d','new-rod-i','new-rod-img'].forEach(id=>document.getElementById(id).value='');
+  renderRodAdmin();
+  toast('낚시대가 추가됐어요! 🎣');
+};
+
+window.delRod = function(idx){
+  if(confirm('정말 삭제할까요?')){ RODS.splice(idx,1); renderRodAdmin(); }
+};
+
+window.saveRods = async function(){
+  try{
+    await updateDoc(doc(db,"config","app"),{rods:RODS});
+    toast('낚시대 목록이 모든 기기에 반영됐어요! 🎣');
+  } catch(e){ toast('저장 실패: '+e.message); }
+};
+
+// ── CSV / 엑셀 일괄 업로드 ──
+let csvParsed = [];
+
+window.downloadTemplate = function(){
+  const bom = '\uFEFF';
+  const header = '상품명,가격,스마트스토어URL,태그(슬래시구분),설명,이미지URL\n';
+  const sample = '무지개 깃털 낚싯대,12900원,https://smartstore.naver.com/avivi/products/12345,깃털/활발한/젊은,사냥 본능을 자극하는 낚싯대,https://shop-phinf.pstatic.net/example.jpg\n';
+  const blob = new Blob([bom+header+sample], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '아비비고물상_상품템플릿.csv';
+  a.click();
+  toast('템플릿 다운로드 완료! 📥');
+};
+
+window.handleCsvUpload = function(input){
+  const file = input.files[0]; if(!file) return;
+  csvParsed = [];
+  document.getElementById('csv-error').style.display='none';
+  document.getElementById('csv-preview').style.display='none';
+  document.getElementById('csv-loading').style.display='block';
+  const ext = file.name.split('.').pop().toLowerCase();
+  if(ext==='csv'){
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('csv-loading').style.display='none';
+      try{ parseCsvText(e.target.result.replace(/^\uFEFF/,'')); }
+      catch(err){ showCsvError('CSV 파싱 오류: '+err.message); }
+    };
+    reader.readAsText(file,'utf-8');
+  } else if(ext==='xlsx'||ext==='xls'){
+    loadSheetJS(()=>{
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('csv-loading').style.display='none';
+        try{
+          const wb = XLSX.read(e.target.result,{type:'binary'});
+          const ws = wb.Sheets[wb.SheetNames[0]];
+          parseCsvText(XLSX.utils.sheet_to_csv(ws));
+        } catch(err){ showCsvError('엑셀 파싱 오류: '+err.message); }
+      };
+      reader.readAsBinaryString(file);
+    });
+  } else {
+    document.getElementById('csv-loading').style.display='none';
+    showCsvError('CSV(.csv) 또는 엑셀(.xlsx/.xls) 파일만 지원해요.');
+  }
+};
+
+function loadSheetJS(cb){
+  if(window.XLSX){ cb(); return; }
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+  s.onload = cb;
+  s.onerror = ()=>showCsvError('엑셀 라이브러리 로드 실패. CSV 파일을 사용해주세요.');
+  document.head.appendChild(s);
+}
+
+function parseCsvLine(line){
+  const result=[]; let cur=''; let inQ=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(ch==='"'){ inQ=!inQ; }
+    else if(ch===','&&!inQ){ result.push(cur.trim()); cur=''; }
+    else { cur+=ch; }
+  }
+  result.push(cur.trim());
+  return result;
+}
+
+function parseCsvText(text){
+  const lines = text.trim().split('\n').filter(l=>l.trim());
+  if(lines.length<2){ showCsvError('데이터가 없어요.\n헤더 행 + 데이터 행이 최소 1개 필요해요.'); return; }
+  const headers = parseCsvLine(lines[0]);
+  const parsed = [];
+  for(let i=1;i<lines.length;i++){
+    const vals = parseCsvLine(lines[i]);
+    if(vals.every(v=>!v)) continue;
+    const row = {};
+    headers.forEach((h,idx)=>{ row[h.trim()]=(vals[idx]||'').trim(); });
+    const name  = row['상품명']||row['name']||row['Name']||'';
+    const price = row['가격']||row['price']||row['Price']||'';
+    const url   = row['스마트스토어URL']||row['URL']||row['url']||row['링크']||'';
+    const tagR  = row['태그(슬래시구분)']||row['태그']||row['tags']||row['Tags']||'';
+    const desc  = row['설명']||row['description']||row['desc']||'';
+    const img   = row['이미지URL']||row['이미지']||row['image']||row['img']||'';
+    if(!name) continue;
+    const tags = tagR.split(/[\/,]/).map(t=>t.trim()).filter(Boolean);
+    parsed.push({name,price,storeUrl:url||CFG.url,tags,description:desc||name,image:img,createdAt:Date.now()});
+  }
+  if(!parsed.length){ showCsvError('유효한 상품 데이터를 찾지 못했어요.\n상품명 열이 있는지 확인해주세요.'); return; }
+  csvParsed = parsed;
+  renderCsvPreview(parsed);
+}
+
+function renderCsvPreview(data){
+  document.getElementById('csv-preview-title').textContent = '✅ '+data.length+'개 상품 확인 — 내용 검토 후 Firebase에 추가하세요';
+  const thS = 'padding:7px 10px;text-align:left;color:#9ca3af;font-weight:normal;border-bottom:1px solid #374151;white-space:nowrap;font-size:11px';
+  const tdS = 'padding:6px 10px;border-bottom:1px solid #1f2937;font-size:11px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+  document.getElementById('csv-thead').innerHTML = '<tr>'+['이미지','상품명','가격','태그','설명'].map(h=>`<th style="${thS}">${h}</th>`).join('')+'</tr>';
+  document.getElementById('csv-tbody').innerHTML = data.map(p=>`
+    <tr>
+      <td style="${tdS}">${p.image?`<img src="${p.image}" style="width:32px;height:32px;object-fit:cover;border-radius:5px;vertical-align:middle" onerror="this.replaceWith(document.createTextNode('🐱'))">`:'🐱'}</td>
+      <td style="${tdS}" title="${p.name}">${p.name}</td>
+      <td style="${tdS}">${p.price||'-'}</td>
+      <td style="${tdS}" title="${p.tags.join(', ')}">${p.tags.slice(0,3).join(' ')}</td>
+      <td style="${tdS}" title="${p.description}">${p.description}</td>
+    </tr>`).join('');
+  document.getElementById('csv-preview').style.display='block';
+}
+
+window.confirmCsvUpload = async function(){
+  if(!csvParsed.length){ toast('업로드할 데이터가 없어요!'); return; }
+  const btn = document.querySelector('[onclick="confirmCsvUpload()"]');
+  if(btn){ btn.textContent='저장 중...'; btn.disabled=true; }
+  let ok=0, fail=0;
+  for(const p of csvParsed){
+    try{ await addDoc(collection(db,"products"),p); ok++; }
+    catch(e){ fail++; console.error(e); }
+  }
+  cancelCsvUpload();
+  toast(ok+'개 Firebase에 저장됐어요!'+(fail?` (${fail}개 실패)`:'')+ ' 🎉');
+};
+
+window.cancelCsvUpload = function(){
+  csvParsed=[];
+  document.getElementById('csv-file').value='';
+  document.getElementById('csv-preview').style.display='none';
+  document.getElementById('csv-error').style.display='none';
+  document.getElementById('csv-loading').style.display='none';
+};
+
+function showCsvError(msg){
+  const el=document.getElementById('csv-error');
+  el.style.display='block'; el.textContent=msg;
+}
+
+// ── 추천 개수 선택 ──
+window._recCount = 10;
+window.setRecCount = function(n){
+  window._recCount = n;
+  document.querySelectorAll('.rcnt-btn').forEach(b=>{
+    const active = parseInt(b.dataset.cnt) === n;
+    b.style.background = active ? 'rgba(255,217,61,.18)' : 'rgba(255,255,255,.08)';
+    b.style.border = active ? '1.5px solid var(--g1)' : '1px solid var(--border)';
+    b.style.color = active ? 'var(--g1)' : 'var(--mu)';
+  });
+  if(document.getElementById('s-res').classList.contains('on')){
+    window.showResult();
+  }
+};
+
+// ── 장바구니 URL ── 상품 페이지로 이동 (네이버 장바구니 API 제한으로 직접 담기 불가)
+window.cartUrl = function(p){
+  return p.storeUrl || CFG.url || '#';
+};
+
+// ── 카카오톡 공유 (SDK 정식 연동) ──
+const KAKAO_APP_KEY = 'e8cf50ea3a2086ca8cdfab884d1e1d14';
+
+function loadKakaoSDK(cb){
+  if(window.Kakao && window.Kakao.isInitialized()){ cb(); return; }
+  if(window.Kakao && !window.Kakao.isInitialized()){
+    window.Kakao.init(KAKAO_APP_KEY); cb(); return;
+  }
+  const s = document.createElement('script');
+  s.src = 'https://developers.kakao.com/sdk/js/kakao.min.js';
+  s.onload = ()=>{
+    window.Kakao.init(KAKAO_APP_KEY);
+    cb();
+  };
+  s.onerror = ()=>{ toast('카카오 SDK 로드 실패'); };
+  document.head.appendChild(s);
+}
+
+window.shareKakao = function(){
+  const catName = document.getElementById('res-ttl')?.textContent || '추천 결과';
+  const chips   = Array.from(document.querySelectorAll('#res-cp .cp')).map(c=>c.textContent);
+  const recs    = Array.from(document.querySelectorAll('#res-cards .pc'));
+  const appUrl  = 'https://abibi-cattoys-mbti.vercel.app';
+
+  // 추천 상품 목록 텍스트 (최대 3개)
+  const recLines = recs.slice(0,3).map((card,i)=>{
+    const name  = card.querySelector('.pn2')?.textContent?.trim() || '';
+    const price = card.querySelector('.ppr')?.textContent?.trim() || '';
+    return `${i===0?'👑':'🎁'} ${name} — ${price}`;
+  }).join('\n');
+
+  const chipTxt = chips.join(' · ');
+  const descTxt = chipTxt + '\n\n' + recLines + '\n\n아비비의고물상에서 우리 아이 맞춤 장난감을 찾아보세요!';
+
+  loadKakaoSDK(()=>{
+    try{
+      window.Kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: `🐱 ${catName}`,
+          description: descTxt,
+          imageUrl: 'https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f431.png',
+          link: {
+            mobileWebUrl: appUrl,
+            webUrl: appUrl,
+          },
+        },
+        buttons: [
+          {
+            title: '🐾 테스트 해보기',
+            link: { mobileWebUrl: appUrl, webUrl: appUrl },
+          },
+          {
+            title: '🏪 스마트스토어',
+            link: {
+              mobileWebUrl: CFG.url || appUrl,
+              webUrl: CFG.url || appUrl,
+            },
+          },
+        ],
+        installTalk: true,
+      });
+      toast('카카오톡 공유 창이 열렸어요! 💬');
+    } catch(e){
+      console.error('Kakao share error:', e);
+      // SDK 실패시 Web Share API 또는 링크 복사로 대체
+      if(navigator.share){
+        navigator.share({
+          title: `🐱 ${catName}`,
+          text: chipTxt + '\n' + recLines,
+          url: appUrl,
+        }).then(()=>toast('공유됐어요! 💬'))
+        .catch(()=>copyLink());
+      } else {
+        copyLink();
+      }
+    }
+  });
+};
+
+function copyLink(){
+  const url = 'https://abibi-cattoys-mbti.vercel.app';
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(()=>toast('링크가 복사됐어요! 📋'));
+  } else {
+    const el = document.createElement('textarea');
+    el.value = url; document.body.appendChild(el);
+    el.select(); document.execCommand('copy');
+    document.body.removeChild(el);
+    toast('링크가 복사됐어요! 📋');
+  }
+}
+
+// ── 결과 캡처/저장 ──
+window.captureResult = async function(){
+  toast('이미지 생성 중... 📸');
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  try{
+    // ── 캡처용 깔끔한 클론 div 생성 ──
+    const src = document.getElementById('capture-area');
+
+    // 숨겨진 렌더 컨테이너 생성
+    const container = document.createElement('div');
+    container.style.cssText = [
+      'position:fixed',
+      'left:-9999px',
+      'top:0',
+      'width:420px',
+      'background:#0d0b1e',
+      'padding:20px',
+      'font-family:Noto Sans KR,sans-serif',
+      'color:#fff',
+      'z-index:-1',
+    ].join(';');
+    document.body.appendChild(container);
+
+    // 내용 복제 + CSS 변수 인라인으로 교체
+    const clone = src.cloneNode(true);
+    clone.style.cssText = 'width:100%;background:#0d0b1e;padding:0';
+
+    // backdrop-filter 제거 (html2canvas가 못 읽음)
+    clone.querySelectorAll('*').forEach(el=>{
+      const cs = window.getComputedStyle(el);
+      // 배경색 인라인 적용
+      const bg = cs.backgroundColor;
+      const color = cs.color;
+      if(bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent'){
+        el.style.backgroundColor = bg;
+      }
+      if(color) el.style.color = color;
+      // backdrop-filter 제거
+      el.style.backdropFilter = 'none';
+      el.style.webkitBackdropFilter = 'none';
+      // 카드 배경 강제 적용
+      if(el.classList && (el.classList.contains('pc') || el.classList.contains('rh'))){
+        el.style.backgroundColor = 'rgba(255,255,255,0.1)';
+        el.style.border = '1px solid rgba(255,255,255,0.2)';
+      }
+    });
+
+    // 워터마크
+    const wm = document.createElement('div');
+    wm.style.cssText = 'text-align:center;padding:14px 0 4px;font-size:12px;color:rgba(255,217,61,0.7);letter-spacing:1px';
+    wm.textContent = '🐱 아비비의고물상 | abibi-cattoys-mbti.vercel.app';
+    clone.appendChild(wm);
+    container.appendChild(clone);
+
+    // html2canvas 로드
+    if(!window.html2canvas){
+      await new Promise((res,rej)=>{
+        const s=document.createElement('script');
+        s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        s.onload=res; s.onerror=rej;
+        document.head.appendChild(s);
+      });
+    }
+
+    // 렌더링
+    const canvas = await html2canvas(container,{
+      backgroundColor:'#0d0b1e',
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+      scrollX: 0,
+      scrollY: 0,
+      width: 460,
+      height: container.scrollHeight,
+      windowWidth: 460,
+      onclone: (doc)=>{
+        // 클론된 문서에서 모든 CSS 변수 강제 해소
+        doc.querySelectorAll('*').forEach(el=>{
+          el.style.backdropFilter='none';
+          el.style.webkitBackdropFilter='none';
+        });
+      }
+    });
+
+    // 컨테이너 제거
+    document.body.removeChild(container);
+
+    const dataUrl = canvas.toDataURL('image/png');
+
+    if(isMobile){
+      const win = window.open('');
+      if(win){
+        win.document.write(`<!DOCTYPE html><html><head>
+          <meta name="viewport" content="width=device-width,initial-scale=1"/>
+          <style>
+            *{box-sizing:border-box;margin:0;padding:0}
+            body{background:#111;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px}
+            .tip{color:#FFD93D;font-family:sans-serif;font-size:14px;text-align:center;background:rgba(255,217,61,.12);border:1px solid rgba(255,217,61,.3);border-radius:10px;padding:12px 16px;line-height:1.6;width:100%;max-width:480px}
+            img{max-width:100%;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+          </style></head><body>
+          <div class="tip">📸 이미지를 <strong>길게 눌러</strong> 저장하세요!<br><small style="opacity:.7">사진 앱에 저장 또는 공유할 수 있어요</small></div>
+          <img src="${dataUrl}" alt="아비비고물상 추천결과"/>
+          </body></html>`);
+        win.document.close();
+        toast('새 탭에서 길게 눌러 저장하세요! 📸');
+      } else {
+        showImgOverlay(dataUrl);
+      }
+    } else {
+      const link = document.createElement('a');
+      link.download = '아비비고물상_추천결과.png';
+      link.href = dataUrl;
+      link.click();
+      toast('이미지가 저장됐어요! 📸');
+    }
+
+  } catch(e){
+    console.error('캡처 오류:', e);
+    // 컨테이너 혹시 남아있으면 제거
+    const c2 = document.querySelector('[style*="-9999px"]');
+    if(c2) c2.remove();
+    // 대안: 직접 Canvas로 카드 그리기
+    captureWithCanvas();
+  }
+};
+
+function showImgOverlay(dataUrl){
+  // 기존 오버레이 제거
+  const old = document.getElementById('img-save-ov');
+  if(old) old.remove();
+
+  const ov = document.createElement('div');
+  ov.id = 'img-save-ov';
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;padding:16px';
+  ov.innerHTML = `
+    <div style="color:#FFD93D;font-family:Jua,sans-serif;font-size:16px;margin-bottom:10px;text-align:center">
+      📸 이미지를 길게 눌러서 저장하세요!
+    </div>
+    <button onclick="document.getElementById('img-save-ov').remove()" style="background:#374151;border:none;border-radius:8px;color:#fff;padding:8px 18px;cursor:pointer;font-size:13px;margin-bottom:12px">✕ 닫기</button>
+    <img src="${dataUrl}" style="max-width:100%;border-radius:12px"/>`;
+  document.body.appendChild(ov);
+}
+
+// ── Canvas API로 직접 결과 이미지 그리기 (완전한 폴백) ──
+async function captureWithCanvas(){
+  toast('이미지 생성 중... 📸');
+  try{
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const W = 400, PAD = 16, SCALE = 2;
+    const IMG_S = 80, CARD_H = 130, CARD_GAP = 10;
+
+    // 현재 표시된 상품 카드에서 데이터 추출
+    const cards = Array.from(document.querySelectorAll('#res-cards .pc'));
+    const catName = document.getElementById('res-ttl')?.textContent || '추천 장난감';
+    const chips = Array.from(document.querySelectorAll('#res-cp .cp')).map(c=>c.textContent);
+
+    // 낚시대 박스 데이터
+    const rodLines = Array.from(document.querySelectorAll('#res-rod-box [style*="justify-content:space-between"]'))
+      .map(el=>({ label: el.children[0]?.textContent||'', val: el.children[1]?.textContent||'' }));
+
+    // 전체 높이 계산
+    const headerH = 80;
+    const chipsH = chips.length ? 30 : 0;
+    const rodH = rodLines.length ? (rodLines.length * 22 + 40) : 0;
+    const cardsH = cards.length * (CARD_H + CARD_GAP);
+    const wmH = 36;
+    const totalH = headerH + chipsH + rodH + 10 + cardsH + wmH + PAD*2;
+
+    // Canvas 생성
+    const cv = document.createElement('canvas');
+    cv.width = W * SCALE;
+    cv.height = totalH * SCALE;
+    const ctx = cv.getContext('2d');
+    ctx.scale(SCALE, SCALE);
+
+    // ── 배경 ──
+    ctx.fillStyle = '#0d0b1e';
+    ctx.fillRect(0, 0, W, totalH);
+    const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, 300);
+    grd.addColorStop(0, 'rgba(100,60,200,0.25)');
+    grd.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, W, totalH);
+
+    let y = PAD;
+
+    // ── 헤더 ──
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#FFD93D';
+    ctx.font = `bold 22px sans-serif`;
+    ctx.fillText('🐱 ' + catName, W/2, y + 28);
+    y += 40;
+
+    if(chips.length){
+      ctx.font = '11px sans-serif';
+      ctx.fillStyle = 'rgba(255,217,61,0.75)';
+      ctx.fillText(chips.join(' · '), W/2, y + 14);
+      y += 26;
+    }
+
+    // 구분선
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(PAD, y); ctx.lineTo(W-PAD, y); ctx.stroke();
+    y += 12;
+
+    // ── 낚시대 박스 ──
+    if(rodLines.length){
+      roundRect(ctx, PAD, y, W-PAD*2, rodLines.length*22+28, 10);
+      ctx.fillStyle = 'rgba(255,107,107,0.1)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,107,107,0.35)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.fillStyle = '#FF6B6B';
+      ctx.font = 'bold 13px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('🎣 선택한 낚시대', PAD+12, y+18);
+
+      rodLines.forEach((r,i)=>{
+        ctx.fillStyle = 'rgba(255,255,255,0.75)';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(r.label, PAD+12, y+36+i*22);
+        ctx.fillStyle = '#FFD93D';
+        ctx.textAlign = 'right';
+        ctx.fillText(r.val, W-PAD-12, y+36+i*22);
+      });
+      y += rodLines.length*22 + 38;
+    }
+
+    // ── 상품 카드 ──
+    for(let i=0; i<cards.length; i++){
+      const card = cards[i];
+      const name  = card.querySelector('.pn2')?.textContent?.trim() || '';
+      const desc  = card.querySelector('.pde')?.textContent?.trim() || '';
+      const price = card.querySelector('.ppr')?.textContent?.trim() || '';
+      const tags  = Array.from(card.querySelectorAll('.ptg')).map(t=>t.textContent).join(' ');
+      const isBest = card.classList.contains('best');
+      const imgEl = card.querySelector('.pt img');
+
+      // 카드 배경
+      roundRect(ctx, PAD, y, W-PAD*2, CARD_H, 12);
+      ctx.fillStyle = isBest ? 'rgba(255,217,61,0.1)' : 'rgba(255,255,255,0.07)';
+      ctx.fill();
+      ctx.strokeStyle = isBest ? '#FFD93D' : 'rgba(255,255,255,0.15)';
+      ctx.lineWidth = isBest ? 2 : 1;
+      ctx.stroke();
+
+      // BEST 뱃지
+      if(isBest){
+        roundRect(ctx, W-PAD-76, y, 76, 22, [0,12,0,12]);
+        ctx.fillStyle = '#FFD93D';
+        ctx.fill();
+        ctx.fillStyle = '#1a1a2e';
+        ctx.font = 'bold 10px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('👑 BEST 추천', W-PAD-6, y+15);
+      }
+
+      // 이미지 박스
+      const ix = PAD+10, iy = y+10;
+      roundRect(ctx, ix, iy, IMG_S, IMG_S, 8);
+      ctx.fillStyle = '#2a1a4e';
+      ctx.fill();
+
+      if(imgEl && imgEl.naturalWidth > 0){
+        try{
+          await drawImg(ctx, imgEl.src, ix, iy, IMG_S, IMG_S, 8);
+        } catch(e){
+          ctx.fillStyle = 'rgba(255,255,255,0.3)';
+          ctx.font = '30px serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('🐱', ix+IMG_S/2, iy+IMG_S/2+10);
+        }
+      } else {
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.font = '30px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('🐱', ix+IMG_S/2, iy+IMG_S/2+10);
+      }
+
+      // 텍스트 영역
+      const tx = PAD+10+IMG_S+12;
+      const maxTW = W-PAD-tx-8;
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.fillText(trimText(ctx, name, maxTW), tx, y+24);
+
+      ctx.fillStyle = 'rgba(255,255,255,0.55)';
+      ctx.font = '11px sans-serif';
+      ctx.fillText(trimText(ctx, desc, maxTW), tx, y+42);
+      // 두 번째 줄
+      if(desc.length > 18){
+        const rest = desc.slice(14);
+        ctx.fillText(trimText(ctx, rest, maxTW), tx, y+56);
+      }
+
+      ctx.fillStyle = '#FFD93D';
+      ctx.font = 'bold 15px sans-serif';
+      ctx.fillText(price, tx, y+76);
+
+      ctx.fillStyle = 'rgba(255,255,255,0.35)';
+      ctx.font = '10px sans-serif';
+      ctx.fillText(trimText(ctx, tags, maxTW), tx, y+94);
+
+      y += CARD_H + CARD_GAP;
+    }
+
+    // ── 워터마크 ──
+    y += 8;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(255,217,61,0.5)';
+    ctx.font = '10px sans-serif';
+    ctx.fillText('🐱 아비비의고물상 · abibi-cattoys-mbti.vercel.app', W/2, y+16);
+
+    const dataUrl = cv.toDataURL('image/png');
+
+    if(isMobile){
+      const win = window.open('');
+      if(win){
+        win.document.write(`<!DOCTYPE html><html><head>
+          <meta name="viewport" content="width=device-width,initial-scale=1"/>
+          <style>*{box-sizing:border-box;margin:0;padding:0}body{background:#0d0b1e;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px}.tip{color:#FFD93D;font-family:sans-serif;font-size:14px;text-align:center;background:rgba(255,217,61,.12);border:1px solid rgba(255,217,61,.3);border-radius:10px;padding:12px 16px;line-height:1.6;width:100%;max-width:440px}img{max-width:100%;border-radius:10px}</style></head>
+          <body><div class="tip">📸 이미지를 <strong>길게 눌러</strong> 저장하세요!</div>
+          <img src="${dataUrl}"/></body></html>`);
+        win.document.close();
+        toast('새 탭에서 길게 눌러 저장하세요! 📸');
+      } else {
+        showImgOverlay(dataUrl);
+      }
+    } else {
+      const link = document.createElement('a');
+      link.download = '아비비고물상_추천결과.png';
+      link.href = dataUrl; link.click();
+      toast('이미지가 저장됐어요! 📸');
+    }
+  } catch(err){
+    console.error('Canvas 오류:', err);
+    showImgOverlay('');
+    toast('저장 실패 — 스크린샷을 이용해주세요!');
+  }
+}
+
+function trimText(ctx, text, maxW){
+  if(!text) return '';
+  if(ctx.measureText(text).width <= maxW) return text;
+  let t = text;
+  while(t.length > 1 && ctx.measureText(t+'…').width > maxW) t = t.slice(0,-1);
+  return t + '…';
+}
+
+function roundRect(ctx, x, y, w, h, r){
+  if(typeof r === 'number') r = [r,r,r,r];
+  ctx.beginPath();
+  ctx.moveTo(x+r[0], y);
+  ctx.lineTo(x+w-r[1], y); ctx.arcTo(x+w,y,x+w,y+r[1],r[1]);
+  ctx.lineTo(x+w, y+h-r[2]); ctx.arcTo(x+w,y+h,x+w-r[2],y+h,r[2]);
+  ctx.lineTo(x+r[3], y+h); ctx.arcTo(x,y+h,x,y+h-r[3],r[3]);
+  ctx.lineTo(x, y+r[0]); ctx.arcTo(x,y,x+r[0],y,r[0]);
+  ctx.closePath();
+}
+
+function drawImg(ctx, src, x, y, w, h, r){
+  return new Promise((res,rej)=>{
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = ()=>{
+      ctx.save();
+      roundRect(ctx,x,y,w,h,r);
+      ctx.clip();
+      ctx.drawImage(img,x,y,w,h);
+      ctx.restore();
+      res();
+    };
+    img.onerror = rej;
+    img.src = src;
+    setTimeout(()=>rej(new Error('timeout')), 3000);
+  });
+}
+
+function fallbackCapture(){
+  captureWithCanvas();
+}
+
+// ── 방문자 통계 ──
+// 앱 시작 시 방문 기록
+async function recordVisit(){
+  try{
+    const today = new Date().toISOString().slice(0,10).replace(/-/g,'');
+    const visitRef = doc(db,'stats','visits');
+    const snap = await getDoc(visitRef);
+    if(snap.exists()){
+      const data = snap.data();
+      const newTotal = (data.total||0) + 1;
+      const days = data.days||{};
+      days[today] = (days[today]||0) + 1;
+      await setDoc(visitRef,{total:newTotal, days, lastVisit:Date.now()});
+    } else {
+      await setDoc(visitRef,{total:1, days:{[today]:1}, lastVisit:Date.now()});
+    }
+  } catch(e){ /* 통계 실패해도 앱 동작에 영향 없음 */ }
+}
+
+// 테스트 완료 기록
+async function recordTest(cat){
+  try{
+    const testRef = doc(db,'stats','tests');
+    const snap = await getDoc(testRef);
+    const base = snap.exists() ? snap.data() : {total:0,pers:{},mats:{},budgets:[],clicks:0};
+    base.total = (base.total||0) + 1;
+    // 성격 집계
+    if(cat.pers){ base.pers = base.pers||{}; base.pers[cat.pers]=(base.pers[cat.pers]||0)+1; }
+    // 재질 집계
+    base.mats = base.mats||{};
+    (cat.mats||[]).forEach(m=>{ base.mats[m]=(base.mats[m]||0)+1; });
+    // 예산 기록 (최근 100개만)
+    base.budgets = base.budgets||[];
+    base.budgets.push(cat.budget||14000);
+    if(base.budgets.length>100) base.budgets = base.budgets.slice(-100);
+    await setDoc(testRef, base);
+  } catch(e){}
+}
+
+// 스토어 클릭 기록
+window.recordStoreClick = async function recordStoreClick(){
+  try{
+    const testRef = doc(db,'stats','tests');
+    const snap = await getDoc(testRef);
+    if(snap.exists()){
+      await updateDoc(testRef,{clicks:(snap.data().clicks||0)+1});
+    }
+  } catch(e){}
+}
+
+window.loadStats = async function(){
+  document.getElementById('stats-loading').style.display='block';
+  document.getElementById('stats-content').style.display='none';
+  try{
+    const today = new Date().toISOString().slice(0,10).replace(/-/g,'');
+    const [visitSnap, testSnap] = await Promise.all([
+      getDoc(doc(db,'stats','visits')),
+      getDoc(doc(db,'stats','tests')),
+    ]);
+
+    const vd = visitSnap.exists() ? visitSnap.data() : {total:0,days:{}};
+    const td = testSnap.exists() ? testSnap.data() : {total:0,pers:{},mats:{},budgets:[],clicks:0};
+
+    document.getElementById('stat-total').textContent = (vd.total||0).toLocaleString();
+    document.getElementById('stat-today').textContent = ((vd.days||{})[today]||0).toLocaleString();
+    document.getElementById('stat-tests').textContent = (td.total||0).toLocaleString();
+    document.getElementById('stat-clicks').textContent = (td.clicks||0).toLocaleString();
+
+    // 인기 성격 TOP3
+    const persRank = Object.entries(td.pers||{}).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const persEmoji = {"활발한":"⚡","진지한":"🧐","호기심많은":"👀","겁쟁이":"🙈","식탐이많은":"🍗","게으른":"💤"};
+    document.getElementById('stat-pers-rank').innerHTML = persRank.length
+      ? persRank.map(([k,v],i)=>`
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <span style="font-family:Jua,sans-serif;font-size:16px;color:var(--g1);width:20px">${i+1}</span>
+            <span style="font-size:18px">${persEmoji[k]||'😺'}</span>
+            <span style="flex:1;font-size:13px">${k}</span>
+            <div style="background:rgba(255,217,61,.15);border-radius:20px;padding:3px 10px;font-size:12px;color:var(--g1);font-family:Jua,sans-serif">${v}회</div>
+          </div>`).join('')
+      : '<div style="font-size:12px;color:#6b7280">아직 데이터가 없어요</div>';
+
+    // 인기 재질 TOP3
+    const matRank = Object.entries(td.mats||{}).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const matEmoji = {"깃털":"🪶","비닐":"🛍️","폼폼이":"🎾","실리콘":"🔵","끈":"🧵","천":"🧶","종이":"📄","나무":"🪵"};
+    document.getElementById('stat-mat-rank').innerHTML = matRank.length
+      ? matRank.map(([k,v],i)=>`
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <span style="font-family:Jua,sans-serif;font-size:16px;color:#4ECDC4;width:20px">${i+1}</span>
+            <span style="font-size:18px">${matEmoji[k]||'🏷️'}</span>
+            <span style="flex:1;font-size:13px">${k}</span>
+            <div style="background:rgba(78,205,196,.15);border-radius:20px;padding:3px 10px;font-size:12px;color:#4ECDC4;font-family:Jua,sans-serif">${v}회</div>
+          </div>`).join('')
+      : '<div style="font-size:12px;color:#6b7280">아직 데이터가 없어요</div>';
+
+    // 평균 예산
+    const budgets = td.budgets||[];
+    const avg = budgets.length ? Math.round(budgets.reduce((a,b)=>a+b,0)/budgets.length) : 0;
+    document.getElementById('stat-avg-budget').textContent = avg ? avg.toLocaleString()+'원' : '-';
+
+    document.getElementById('stats-loading').style.display='none';
+    document.getElementById('stats-content').style.display='block';
+  } catch(e){
+    document.getElementById('stats-loading').textContent='통계를 불러오지 못했어요. Firebase 연결을 확인해주세요.';
+  }
+};
+
 // ── 토스트 ──
 let toastT=null;
 window.toast = function(msg){
@@ -850,6 +2245,8 @@ window.toast = function(msg){
 
 // ── 시작 ──
 initFirebase();
+// 방문 기록 (Firebase 초기화 후)
+setTimeout(()=>recordVisit(), 2000);
 </script>
 </body>
 </html>
