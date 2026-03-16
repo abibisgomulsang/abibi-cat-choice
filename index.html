@@ -1699,30 +1699,18 @@ window.shareKakao = function(){
   loadKakaoSDK(()=>{
     try{
       window.Kakao.Share.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: `🐱 ${catName}`,
-          description: descTxt,
-          imageUrl: 'https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f431.png',
-          link: {
-            mobileWebUrl: appUrl,
-            webUrl: appUrl,
-          },
+        objectType: 'text',
+        text: '🐱 ' + catName + '\n\n' + descTxt,
+        link: {
+          mobileWebUrl: appUrl,
+          webUrl: appUrl,
         },
         buttons: [
           {
             title: '🐾 테스트 해보기',
             link: { mobileWebUrl: appUrl, webUrl: appUrl },
           },
-          {
-            title: '🏪 스마트스토어',
-            link: {
-              mobileWebUrl: CFG.url || appUrl,
-              webUrl: CFG.url || appUrl,
-            },
-          },
         ],
-        installTalk: true,
       });
       toast('카카오톡 공유 창이 열렸어요! 💬');
     } catch(e){
