@@ -156,8 +156,31 @@ input[type=range]{width:100%;accent-color:var(--g1);cursor:pointer;height:6px}
       <div style="font-size:13px;color:var(--mu);margin-top:5px;line-height:1.6">간단한 질문으로 우리 아이에게<br>딱 맞는 장난감을 추천해드릴게요!</div>
     </div>
     <button class="btn bp" onclick="go('name')">테스트 시작하기 🐾</button>
+    <button onclick="go('saves')" style="width:100%;margin-top:10px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);border-radius:14px;color:var(--tx);padding:13px;cursor:pointer;font-family:Jua,sans-serif;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px">
+      📋 저장된 추천 보기 <span id="saves-badge" style="display:none;background:var(--g1);color:#1a1a2e;border-radius:20px;padding:1px 8px;font-size:11px"></span>
+    </button>
+    <button onclick="shareApp()" style="width:100%;margin-top:8px;background:linear-gradient(135deg,#FEE500,#FFCD00);border:none;border-radius:14px;color:#1a1a2e;padding:13px;cursor:pointer;font-family:Jua,sans-serif;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px">
+      💌 친구에게 공유하기
+    </button>
   </div>
   <button class="admbtn" onclick="showLogin()">⚙️ 관리자</button>
+</div>
+
+<!-- SAVES 화면 -->
+<div class="scr" id="s-saves" style="justify-content:flex-start;padding-top:28px">
+  <div style="width:100%;max-width:440px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+      <button onclick="go('home')" style="background:rgba(255,255,255,.08);border:1px solid var(--border);border-radius:10px;padding:8px 14px;color:var(--tx);cursor:pointer;font-size:13px">← 홈</button>
+      <div style="font-family:Jua,sans-serif;font-size:20px;color:var(--g1)">📋 저장된 추천 목록</div>
+    </div>
+    <div id="saves-list">
+      <div style="text-align:center;padding:40px 0;color:var(--mu)">
+        <div style="font-size:40px;margin-bottom:10px">📭</div>
+        <div style="font-family:Jua,sans-serif">저장된 추천이 없어요</div>
+        <div style="font-size:12px;margin-top:6px">추천 결과 화면에서 💾 저장하기를 눌러보세요!</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- NAME -->
@@ -174,7 +197,7 @@ input[type=range]{width:100%;accent-color:var(--g1);cursor:pointer;height:6px}
         <button class="gb" id="gm" onclick="selG('수컷')"><span class="gi">♂️</span><span>남아 (수컷)</span></button>
         <button class="gb" id="gf" onclick="selG('암컷')"><span class="gi">♀️</span><span>여아 (암컷)</span></button>
       </div>
-      <button class="btn bp" id="btn-n" disabled onclick="go('age')">다음으로 →</button>
+      <button class="btn bp" id="btn-n" onclick="go('age')">다음으로 →</button>
       <button class="btn bg" onclick="go('home')">← 처음으로</button>
     </div>
   </div>
@@ -268,10 +291,21 @@ input[type=range]{width:100%;accent-color:var(--g1);cursor:pointer;height:6px}
         </button>
       </div>
       <div id="rod-list" style="display:flex;flex-direction:column;gap:10px"></div>
-      <div id="rod-total-wrap" style="display:none;margin-top:16px;padding:12px 16px;background:rgba(255,217,61,.1);border:1px solid rgba(255,217,61,.3);border-radius:12px;text-align:center">
-        <div style="font-size:12px;color:var(--mu);margin-bottom:3px">선택한 낚시대 합계</div>
-        <div style="font-family:Jua,sans-serif;font-size:22px;color:var(--g1)" id="rod-total-val">0원</div>
-        <div style="font-size:11px;color:var(--mu);margin-top:3px">장난감 예산 <span id="rod-toy-budget" style="color:var(--g1)"></span> + 낚시대 <span id="rod-rod-sum" style="color:var(--g1)"></span></div>
+      <div id="rod-total-wrap" style="display:none;margin-top:16px;padding:14px 16px;background:rgba(255,107,107,.1);border:1.5px solid rgba(255,107,107,.4);border-radius:14px">
+        <div style="font-family:Jua,sans-serif;font-size:13px;color:#FF6B6B;margin-bottom:10px">🧾 선택한 낚시대 금액</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+          <span style="color:var(--mu)">💰 장난감 예산</span>
+          <span style="font-family:Jua,sans-serif;color:var(--g1)" id="rod-toy-budget"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px">
+          <span style="color:var(--mu)">🎣 낚시대 합계</span>
+          <span style="font-family:Jua,sans-serif;color:#FF6B6B" id="rod-rod-sum"></span>
+        </div>
+        <div style="border-top:1px solid rgba(255,107,107,.3);padding-top:10px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:Jua,sans-serif;font-size:14px">🛒 예상 총 구매금액</span>
+          <span style="font-family:Jua,sans-serif;font-size:22px;color:var(--g1)" id="rod-total-val"></span>
+        </div>
+        <div style="font-size:11px;color:var(--mu);margin-top:6px;text-align:center">장난감은 추천 결과에서 선택 후 구매해요!</div>
       </div>
       <button class="btn bp" onclick="showResult()" style="margin-top:14px">🎁 추천 결과 보기</button>
       <button class="btn bg" onclick="go('budget')">← 이전</button>
@@ -295,14 +329,47 @@ input[type=range]{width:100%;accent-color:var(--g1);cursor:pointer;height:6px}
       <button class="rcnt-btn" data-cnt="16" onclick="setRecCount(16)" style="background:rgba(255,255,255,.08);border:1px solid var(--border);border-radius:20px;color:var(--mu);padding:6px 16px;cursor:pointer;font-family:Jua,sans-serif;font-size:13px">16개 보기</button>
     </div>
     <div id="res-rod-box" style="width:100%"></div>
+
+    <!-- 선택 상품 합산 금액 (실시간) -->
+    <div id="res-sel-summary" style="display:none;width:100%;margin-bottom:12px;background:rgba(255,217,61,.1);border:1.5px solid rgba(255,217,61,.4);border-radius:16px;padding:13px 16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-family:Jua,sans-serif;font-size:14px;color:var(--g1)">🛒 선택한 상품</span>
+        <span style="font-size:11px;color:var(--mu)" id="res-sel-count">0개 선택</span>
+      </div>
+      <div id="res-sel-rows"></div>
+      <div style="border-top:1px solid rgba(255,217,61,.25);margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-family:Jua,sans-serif;font-size:14px;color:var(--tx)">💰 총 예상 금액</span>
+        <span style="font-family:Jua,sans-serif;font-size:22px;color:var(--g1)" id="res-sel-total">0원</span>
+      </div>
+    </div>
+
     <div id="res-cards" style="width:100%"></div>
+    <!-- 더보기 버튼 -->
+    <div id="res-more-wrap" style="width:100%;margin:12px 0 4px;display:none">
+      <button onclick="loadMoreRecs()" style="width:100%;background:rgba(255,217,61,.1);border:1.5px solid rgba(255,217,61,.4);border-radius:14px;color:var(--g1);padding:14px;cursor:pointer;font-family:Jua,sans-serif;font-size:14px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px">
+        🔄 다른 제품 더보기
+      </button>
+    </div>
   </div>
-  <!-- 버튼 영역 (캡처 제외) -->
-  <div style="width:100%;max-width:440px;display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px">
-    <button class="btn bp" onclick="restart()" style="margin-top:0">🔄 다시 테스트</button>
-    <a class="btn bp" id="store-all" href="https://smartstore.naver.com/avivi" target="_blank" style="margin-top:0;display:flex;align-items:center;justify-content:center">🏪 전체 상품</a>
-    <button class="btn" onclick="shareKakao()" style="margin-top:0;background:linear-gradient(135deg,#FEE500,#FFCD00);color:#3A1D1D;font-family:Jua,sans-serif;font-size:14px">💬 공유하기</button>
-    <button class="btn" onclick="captureResult()" style="margin-top:0;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-family:Jua,sans-serif;font-size:14px">📸 결과 저장</button>
+
+  <!-- 버튼 영역 -->
+  <div style="width:100%;max-width:440px;display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
+    <!-- 저장하기 (전체 너비) -->
+    <button onclick="saveResult()" id="btn-save-res" style="width:100%;background:linear-gradient(135deg,#4ECDC4,#2eb8ae);border:none;border-radius:12px;color:#fff;padding:13px 0;cursor:pointer;font-family:Jua,sans-serif;font-size:15px">💾 이 추천 저장하기</button>
+    <!-- 전체선택 + 선택공유 -->
+    <div style="display:flex;gap:8px">
+      <button onclick="toggleSelectAll()" id="btn-sel-all" style="flex:1;background:rgba(255,255,255,.08);border:1px solid var(--border);border-radius:12px;color:var(--tx);padding:10px 0;cursor:pointer;font-family:Jua,sans-serif;font-size:13px;transition:all .2s">☑️ 전체 선택</button>
+      <button onclick="shareSelected()" style="flex:2;background:linear-gradient(135deg,#FEE500,#FFCD00);border:none;border-radius:12px;color:#1a1a2e;padding:10px 0;cursor:pointer;font-family:Jua,sans-serif;font-size:13px">💬 선택 상품 공유</button>
+    </div>
+    <!-- 다시테스트 + 전체상품 -->
+    <div style="display:flex;gap:8px">
+      <button class="btn bp" onclick="restart()" style="flex:1;margin-top:0">🔄 다시 테스트</button>
+      <a class="btn bp" id="store-all" href="https://smartstore.naver.com/avivi" target="_blank" style="flex:1;margin-top:0;display:flex;align-items:center;justify-content:center">🏪 전체 상품</a>
+    </div>
+    <!-- 앱 공유하기 -->
+    <button onclick="shareApp()" style="width:100%;background:linear-gradient(135deg,#FEE500,#FFCD00);border:none;border-radius:12px;color:#1a1a2e;padding:12px;cursor:pointer;font-family:Jua,sans-serif;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px">
+      💌 이 앱 친구에게 공유하기
+    </button>
   </div>
   <div style="height:32px"></div>
 </div>
@@ -578,8 +645,10 @@ input[type=range]{width:100%;accent-color:var(--g1);cursor:pointer;height:6px}
 
 <!-- Firebase SDK (CDN) -->
 <script type="module">
+
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, addDoc, updateDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, addDoc, updateDoc, deleteDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ── Firebase 설정 ──
 const firebaseConfig = {
@@ -763,17 +832,6 @@ function applyConfig(){
 }
 
 // ── 화면 이동 ──
-window.go = function(id){
-  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
-  document.getElementById('s-'+id).classList.add('on');
-  window.scrollTo(0,0);
-  if(id==='age') rAge();
-  if(id==='mat') rMat();
-  if(id==='pers') rPers();
-  if(id==='budget'){ CAT.budget = CAT.budget||14000; window.rBudget(); }
-  if(id==='rod') rRodScreen();
-  rProg(id);
-};
 
 window.rProg = function(id){
   const steps={name:1,age:2,mat:3,pers:4,budget:5,rod:6};
@@ -784,8 +842,8 @@ window.rProg = function(id){
 
 // ── STEP 1: 이름/성별 ──
 window.chkName = function(){
-  CAT.name = document.getElementById('cat-name').value.trim();
-  document.getElementById('btn-n').disabled = !(CAT.name && CAT.gender);
+  CAT.name = document.getElementById('cat-name').value.trim() || '우리 아이';
+  // 이름/성별 없어도 진행 가능
 };
 window.selG = function(g){
   CAT.gender=g;
@@ -893,15 +951,92 @@ function formatPrice(priceStr){
   return n.toLocaleString() + '원';
 }
 
-function getRecs(){
+// ── 태그 정규화 (# 제거) ──
+function normTag(t){ return (t||'').replace(/^#+/,'').trim().toLowerCase(); }
+function hasTags(tags, ...targets){
+  return targets.some(target =>
+    (tags||[]).some(t => normTag(t) === target.toLowerCase())
+  );
+}
+
+// ── 낚시대가 고스틱 계열인지 판별 ──
+function isGostickRod(r){
+  // type 필드가 있으면 우선
+  if(r.type === 'gostick') return true;
+  if(r.type === 'normal')  return false;
+  // type 없으면 이름으로 판별
+  return /고스틱/i.test(r.name||'');
+}
+
+// ── 선택한 낚시대 종류 분류 ──
+function getRodType(){
+  if(!CAT.rods || !CAT.rods.length) return null;
+  const selRods = RODS.filter(r => CAT.rods.includes(r.id));
+  if(!selRods.length) return null;
+
+  const hasGostick = selRods.some(r => isGostickRod(r));
+  const hasNormal  = selRods.some(r => !isGostickRod(r));
+
+  if(hasGostick && hasNormal) return 'both';
+  if(hasGostick) return 'gostick';
+  return 'normal';
+}
+
+// ── 낚시대 타입에 따른 상품 필터 (동등 비율 포함) ──
+function filterByRodType(prods){
+  const rodType = getRodType();
+  if(!rodType) return prods; // 낚시대 미선택 → 전체
+
+  const isGostickProd = p => hasTags(p.tags, '고스틱전용', '고스틱');
+  const isNormalProd  = p => hasTags(p.tags, '일반리필', '일반');
+
+  if(rodType === 'gostick'){
+    // 고스틱만 → 고스틱 전용 태그 상품 + 태그 없는 일반 장난감
+    return prods.filter(p => {
+      const hasG = isGostickProd(p);
+      const hasN = isNormalProd(p);
+      if(!hasG && !hasN) return true; // 리필태그 없는 장난감 → 포함
+      return hasG;                    // 고스틱 전용만
+    });
+  }
+  if(rodType === 'normal'){
+    // 일반만 → 일반리필 태그 상품 + 태그 없는 일반 장난감
+    return prods.filter(p => {
+      const hasG = isGostickProd(p);
+      const hasN = isNormalProd(p);
+      if(!hasG && !hasN) return true; // 리필태그 없는 장난감 → 포함
+      return hasN;                    // 일반 리필만
+    });
+  }
+  if(rodType === 'both'){
+    // 둘 다 → 고스틱/일반 동등 비율로 섞기
+    const gostickProds = prods.filter(p => isGostickProd(p));
+    const normalProds  = prods.filter(p => isNormalProd(p) && !isGostickProd(p));
+    const otherProds   = prods.filter(p => !isGostickProd(p) && !isNormalProd(p));
+    // 고스틱/일반 번갈아 합치기 (동등 비율)
+    const mixed = [];
+    const maxLen = Math.max(gostickProds.length, normalProds.length);
+    for(let i=0; i<maxLen; i++){
+      if(i < gostickProds.length) mixed.push(gostickProds[i]);
+      if(i < normalProds.length)  mixed.push(normalProds[i]);
+    }
+    return [...mixed, ...otherProds];
+  }
+  return prods;
+}
+
+// 전체 추천 목록 캐시 (페이지 이동용)
+let _allScoredCache = [];
+
+function getAllScored(){
   const at=atag(CAT.age);
   const pt=CAT.pers==="활발한"?["활발한","호기심많은"]:CAT.pers==="호기심많은"?["호기심많은","활발한"]:CAT.pers==="게으른"?["진지한"]:["진지한",CAT.pers];
-  // 낚시대 가격 차감 후 남은 장난감 예산
   const rodSum = getRodSum();
   const budget = Math.max((CAT.budget || 14000) - rodSum, 1000);
   const margin = 0.5;
+  const filteredProds = filterByRodType(PRODS);
 
-  let scored = PRODS.map(p=>{
+  const scored = filteredProds.map(p=>{
     let s=0;
     if(p.tags&&p.tags.includes(at)) s+=3;
     CAT.mats.forEach(m=>{if(p.tags&&p.tags.includes(m)) s+=2;});
@@ -914,45 +1049,100 @@ function getRecs(){
       else if(diff <= margin) s += 1;
     }
     return {...p, score:s, parsedPrice: price};
-  }).filter(p=>p.score>0).sort((a,b)=>b.score-a.score);
-  return scored.slice(0, window._recCount||4);
-}
-window.showResult = function(){
-  const recs=getRecs();
-  document.getElementById('res-ttl').textContent=`${CAT.name}(이)의 추천 장난감`;
-  const rodSum = getRodSum();
-  const selRodNames = RODS.filter(r=>CAT.rods&&CAT.rods.includes(r.id)).map(r=>r.name);
-  const chips = [CAT.gender, CAT.age+'살', CAT.pers, ...CAT.mats, '예산 '+Number(CAT.budget||14000).toLocaleString()+'원'];
-  if(selRodNames.length) chips.push('🎣 낚시대 '+selRodNames.length+'개');
-  document.getElementById('res-cp').innerHTML = chips.map(c=>`<span class="cp">${c}</span>`).join('');
-  document.getElementById('store-all').href=CFG.url||"https://smartstore.naver.com/avivi";
+  }).sort((a,b)=>b.score-a.score);
 
-  // 낚시대 선택 요약 박스
+  // 점수있는 먼저, 없는 건 뒤에 랜덤 섞어서 다양하게
+  const withScore    = scored.filter(p=>p.score>0);
+  const withoutScore = scored.filter(p=>p.score===0).sort(()=>Math.random()-0.5);
+  return [...withScore, ...withoutScore];
+}
+
+function getRecs(){
+  const cnt  = window._recCount || 4;
+  const page = window._recPage  || 0;
+  const all  = _allScoredCache;
+  const start = page * cnt;
+  const end   = start + cnt;
+  // 마지막 페이지에서 부족하면 처음부터 채우기
+  const slice = all.slice(start, end);
+  if(slice.length === cnt) return slice;
+  return [...slice, ...all.slice(0, cnt - slice.length)];
+}
+// 선택된 상품 ID 집합
+let selectedProds = new Set();
+
+window.showResult = function(){
+  selectedProds = new Set();
+  // 전체 추천 캐시 갱신 + 페이지 초기화
+  _allScoredCache = getAllScored();
+  window._recPage = 0;
+  const recs    = getRecs();
+  const recCount = window._recCount || 4;
+  const rodSum  = getRodSum();
+  const selRods = RODS.filter(r=>CAT.rods&&CAT.rods.includes(r.id));
+  document.getElementById('res-ttl').textContent = `${CAT.name}(이)의 추천 장난감`;
+  const chips = [CAT.gender, CAT.age+'살', CAT.pers, ...CAT.mats, '예산 '+Number(CAT.budget||14000).toLocaleString()+'원'];
+  if(selRods.length) chips.push('🎣 낚시대 '+selRods.length+'개');
+  document.getElementById('res-cp').innerHTML = chips.map(c=>`<span class="cp">${c}</span>`).join('');
+  document.getElementById('store-all').href = CFG.url||'https://smartstore.naver.com/avivi';
+
+  // 낚시대 요약
   let rodBox = '';
-  if(selRodNames.length){
-    rodBox = `<div style="width:100%;max-width:440px;margin-bottom:14px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.35);border-radius:14px;padding:12px 16px">
-      <div style="font-family:Jua,sans-serif;font-size:14px;color:#FF6B6B;margin-bottom:6px">🎣 선택한 낚시대</div>
-      ${RODS.filter(r=>CAT.rods&&CAT.rods.includes(r.id)).map(r=>`
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px">
-          <span>${r.icon||'🎣'} ${r.name}</span>
-          <span style="color:var(--g1);font-family:Jua,sans-serif">${Number(r.price||0).toLocaleString()}원</span>
-        </div>`).join('')}
-    };
+  if(selRods.length){
+    const rodType = getRodType();
+    const refillNote = rodType==='gostick' ? '💜 고스틱 전용 리필 상품이 추천됩니다'
+                     : rodType==='normal'  ? '🩵 일반 리필 상품이 추천됩니다'
+                     : rodType==='both'    ? '💜 고스틱 전용 + 🩵 일반 리필 상품이 모두 추천됩니다'
+                     : '';
+    rodBox = `<div style="width:100%;margin-bottom:12px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.35);border-radius:14px;padding:12px 16px">
+      <div style="font-family:Jua,sans-serif;font-size:13px;color:#FF6B6B;margin-bottom:6px">🎣 선택한 낚시대</div>
+      ${selRods.map(r=>{
+        const isGostick = r.type==='gostick'||/고스틱/i.test(r.name);
+        return `<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;align-items:center">
+          <span>${r.icon||'🎣'} ${r.name} <span style="font-size:10px;color:${isGostick?'#c084fc':'#4ECDC4'}">(${isGostick?'고스틱전용':'일반리필'})</span></span>
+          <span style="color:#FF6B6B;font-family:Jua,sans-serif">${Number(r.price||0).toLocaleString()}원</span>
+        </div>`;
+      }).join('')}
+      <div style="border-top:1px solid rgba(255,107,107,.25);margin-top:7px;padding-top:7px;display:flex;justify-content:space-between;font-family:Jua,sans-serif;font-size:13px">
+        <span style="color:var(--mu)">낚시대 합계</span>
         <span style="color:#FF6B6B">${Number(rodSum).toLocaleString()}원</span>
       </div>
-      <div style="display:flex;justify-content:space-between;font-family:Jua,sans-serif;font-size:13px;margin-top:4px">
-        <span style="color:var(--mu)">남은 장난감 예산</span>
-        <span style="color:var(--g1)">${Number(Math.max((CAT.budget||14000)-rodSum,0)).toLocaleString()}원</span>
-      </div>
+      ${refillNote ? `<div style="margin-top:7px;font-size:11px;color:var(--mu);background:rgba(255,255,255,.05);border-radius:8px;padding:6px 10px">${refillNote}</div>` : ''}
     </div>`;
   }
   document.getElementById('res-rod-box').innerHTML = rodBox;
+
+  const use2col = recCount >= 10;
+
   if(!recs.length){
-    document.getElementById('res-cards').innerHTML=`<div class="pc" style="text-align:center;padding:30px"><div style="font-size:46px">😿</div><p style="margin-top:10px;color:var(--mu)">조건에 맞는 상품이 없어요.<br>다시 테스트해보세요!</p></div>`;
+    document.getElementById('res-cards').innerHTML = `<div class="pc" style="text-align:center;padding:30px"><div style="font-size:46px">😿</div><p style="margin-top:10px;color:var(--mu)">조건에 맞는 상품이 없어요.</p></div>`;
+    updateSelSummary(); go('res'); recordTest(CAT); return;
+  }
+
+  if(use2col){
+    document.getElementById('res-cards').innerHTML =
+      `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">` +
+      recs.map((p,i)=>{
+        const pid = p.id||('rec_'+i);
+        return `<div class="pc sel-card" data-pid="${pid}" data-price="${parsePrice(p.price)||0}" onclick="toggleProd('${pid}')"
+          style="margin-bottom:0;padding:12px;animation-delay:${i*0.05}s;cursor:pointer;position:relative;user-select:none">
+          <div id="ck_${pid}" style="position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;z-index:1">○</div>
+          <div style="width:100%;aspect-ratio:1;border-radius:10px;background:linear-gradient(135deg,#2a1a4e,#1a2a4e);overflow:hidden;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:28px">
+            ${p.image?`<img src="${proxyImg(p.image)}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='${pe(p)}'"/>`:pe(p)}
+          </div>
+          <div style="font-family:Jua,sans-serif;font-size:12px;line-height:1.3;margin-bottom:4px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${p.name}</div>
+          <div style="font-family:Jua,sans-serif;font-size:14px;color:var(--g1)">${formatPrice(p.price)}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:4px">${(p.tags||[]).slice(0,2).map(t=>`<span class="ptg">#${t}</span>`).join('')}</div>
+          <a href="${p.storeUrl||CFG.url}" target="_blank" onclick="event.stopPropagation();recordStoreClick()"
+            style="display:block;text-align:center;margin-top:8px;padding:6px 4px;background:linear-gradient(135deg,#03C75A,#029944);border-radius:8px;color:#fff;font-size:11px;font-family:Jua,sans-serif;text-decoration:none">🛒 스토어 보기</a>
+        </div>`;
+      }).join('') + `</div>`;
   } else {
-    document.getElementById('res-cards').innerHTML=recs.map((p,i)=>`
-      <div class="pc ${i===0?'best':''}" style="animation-delay:${i*0.1}s">
-        ${i===0?'<div class="bb">👑 BEST 추천</div>':''}
+    document.getElementById('res-cards').innerHTML = recs.map((p,i)=>{
+      const pid = p.id||('rec_'+i);
+      return `<div class="pc sel-card" data-pid="${pid}" data-price="${parsePrice(p.price)||0}"
+        style="animation-delay:${i*0.1}s;cursor:pointer;user-select:none;position:relative" onclick="toggleProd('${pid}')">
+        <div id="ck_${pid}" style="position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .2s;z-index:1">○</div>
         <div class="pi2">
           <div class="pt">${th(p)}</div>
           <div class="pif">
@@ -962,21 +1152,401 @@ window.showResult = function(){
           </div>
         </div>
         <div class="ptgs">${(p.tags||[]).map(t=>`<span class="ptg">#${t}</span>`).join('')}</div>
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <a class="btn bgr" href="${p.storeUrl||CFG.url}" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;margin-top:0" onclick="recordStoreClick()">🛒 상품 보기</a>
-          <a class="btn" href="${cartUrl(p)}" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;margin-top:0;background:linear-gradient(135deg,#FF6B6B,#e94560);color:#fff;font-family:Jua,sans-serif;font-size:14px" onclick="recordStoreClick()">🛍️ 장바구니</a>
-        </div>
-      </div>`).join('');
+        <a class="btn bgr" href="${p.storeUrl||CFG.url}" target="_blank" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:5px" onclick="event.stopPropagation();recordStoreClick()">🛒 스마트스토어에서 보기</a>
+      </div>`;
+    }).join('');
   }
+
+  updateSelSummary();
   go('res');
   recordTest(CAT);
 };
+
+// ── 상품 선택 토글 ──
+window.toggleProd = function(pid){
+  const card = document.querySelector('[data-pid="'+pid+'"]');
+  const ck   = document.getElementById('ck_'+pid);
+  if(!card) return;
+  if(selectedProds.has(pid)){
+    selectedProds.delete(pid);
+    if(ck){ck.textContent='○';ck.style.background='rgba(255,255,255,.12)';ck.style.borderColor='rgba(255,255,255,.3)';}
+    card.style.outline='';
+  } else {
+    selectedProds.add(pid);
+    if(ck){ck.textContent='✓';ck.style.background='rgba(255,217,61,.35)';ck.style.borderColor='#FFD93D';ck.style.color='#1a1a2e';}
+    card.style.outline='2px solid #FFD93D';
+  }
+  updateSelSummary();
+};
+
+// ── 전체 선택/해제 ──
+window.toggleSelectAll = function(){
+  const cards = Array.from(document.querySelectorAll('.sel-card'));
+  const allSelected = cards.length > 0 && cards.every(c=>selectedProds.has(c.dataset.pid));
+  const btn = document.getElementById('btn-sel-all');
+  cards.forEach(c=>{
+    const pid = c.dataset.pid;
+    if(allSelected){
+      selectedProds.delete(pid);
+      const ck=document.getElementById('ck_'+pid);
+      if(ck){ck.textContent='○';ck.style.background='rgba(255,255,255,.12)';ck.style.borderColor='rgba(255,255,255,.3)';ck.style.color='';}
+      c.style.outline='';
+    } else {
+      selectedProds.add(pid);
+      const ck=document.getElementById('ck_'+pid);
+      if(ck){ck.textContent='✓';ck.style.background='rgba(255,217,61,.35)';ck.style.borderColor='#FFD93D';ck.style.color='#1a1a2e';}
+      c.style.outline='2px solid #FFD93D';
+    }
+  });
+  if(btn) btn.textContent = allSelected ? '☑️ 전체 선택' : '☒ 전체 해제';
+  updateSelSummary();
+};
+
+// ── 선택 합산 금액 실시간 업데이트 ──
+function updateSelSummary(){
+  const summary = document.getElementById('res-sel-summary');
+  const rowsEl  = document.getElementById('res-sel-rows');
+  const totalEl = document.getElementById('res-sel-total');
+  const cntEl   = document.getElementById('res-sel-count');
+  if(!summary) return;
+
+  const rodSum  = getRodSum();
+  const selRods = RODS.filter(r=>CAT.rods&&CAT.rods.includes(r.id));
+
+  // 선택된 상품 카드에서 이름/가격 추출
+  const selItems = [];
+  selectedProds.forEach(pid=>{
+    const card = document.querySelector('[data-pid="'+pid+'"]');
+    if(!card) return;
+    const name  = card.querySelector('.pn2')?.textContent?.trim()
+                || card.querySelectorAll('div')[4]?.textContent?.trim() || pid;
+    const price = parseInt(card.dataset.price)||0;
+    selItems.push({name, price});
+  });
+
+  const toyTotal   = selItems.reduce((s,p)=>s+p.price, 0);
+  const grandTotal = toyTotal + rodSum;
+
+  if(selItems.length === 0 && rodSum === 0){ summary.style.display='none'; return; }
+
+  summary.style.display = 'block';
+  cntEl.textContent = selItems.length+'개 선택';
+
+  let rows = selItems.map(p=>`
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+      <span style="color:var(--mu);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:8px">🎁 ${p.name}</span>
+      <span style="font-family:Jua,sans-serif;font-size:12px;color:var(--g1);flex-shrink:0">${p.price.toLocaleString()}원</span>
+    </div>`).join('');
+  selRods.forEach(r=>{
+    rows += `<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+      <span style="color:var(--mu)">${r.icon||'🎣'} ${r.name}</span>
+      <span style="font-family:Jua,sans-serif;font-size:12px;color:#FF6B6B;flex-shrink:0">${Number(r.price||0).toLocaleString()}원</span>
+    </div>`;
+  });
+  rowsEl.innerHTML = rows;
+  totalEl.textContent = grandTotal.toLocaleString()+'원';
+}
+
+// ── 선택 상품 공유 ──
+window.shareSelected = async function(){
+  if(selectedProds.size === 0){
+    toast('먼저 공유할 상품을 선택해주세요! 📌'); return;
+  }
+  toast('공유 이미지 생성 중... 📸');
+  try{
+    const selPids = new Set(selectedProds);
+    const dataUrl = await buildResultImage(selPids);
+    if(!dataUrl){ toast('이미지 생성 실패. 다시 시도해주세요.'); return; }
+    const catName = document.getElementById('res-ttl')?.textContent||'추천 결과';
+    await doShare(dataUrl, catName);
+  } catch(e){
+    console.error('shareSelected error:', e);
+    toast('공유 중 오류가 발생했어요. 다시 시도해주세요.');
+  }
+};
+
+
+// ══════════════════════════════════════════
+// 💾 저장 기능
+// ══════════════════════════════════════════
+
+// 기기 고유 ID (localStorage)
+function getDeviceId(){
+  let id = localStorage.getItem('abibi_uid');
+  if(!id){ id = 'u_'+Date.now()+'_'+Math.random().toString(36).slice(2,8); localStorage.setItem('abibi_uid',id); }
+  return id;
+}
+
+// 추천 결과 저장
+window.saveResult = async function(){
+  const recs = getRecs();
+  if(!recs.length){ toast('추천 결과가 없어요!'); return; }
+
+  const btn = document.getElementById('btn-save-res');
+  if(btn){ btn.textContent='저장 중...'; btn.disabled=true; }
+
+  const selRods  = RODS.filter(r=>CAT.rods&&CAT.rods.includes(r.id));
+  const rodSum   = getRodSum();
+  const toyTotal = recs.reduce((s,p)=>s+(parsePrice(p.price)||0),0);
+
+  const saveData = {
+    uid:       getDeviceId(),
+    savedAt:   Date.now(),
+    cat: {
+      name:    CAT.name,
+      gender:  CAT.gender,
+      age:     CAT.age,
+      mats:    CAT.mats,
+      pers:    CAT.pers,
+      budget:  CAT.budget,
+    },
+    rods:      selRods.map(r=>({name:r.name, price:r.price, icon:r.icon||'🎣'})),
+    rodSum,
+    recs:      recs.map(p=>({
+      id:          p.id||'',
+      name:        p.name,
+      price:       p.price,
+      description: p.description||'',
+      image:       p.image||'',
+      tags:        p.tags||[],
+      storeUrl:    p.storeUrl||CFG.url||'',
+    })),
+    totalPrice: toyTotal + rodSum,
+  };
+
+  try{
+    await addDoc(collection(db,'saves'), saveData);
+    toast('저장됐어요! 📋 홈 > 저장된 추천 보기에서 확인하세요');
+    if(btn){ btn.textContent='✅ 저장됨!'; btn.style.background='linear-gradient(135deg,#03C75A,#029944)'; }
+    updateSavesBadge();
+  } catch(e){
+    console.error('save error:',e);
+    toast('저장 실패: '+e.message);
+    if(btn){ btn.textContent='💾 이 추천 저장하기'; btn.disabled=false; btn.style.background=''; }
+  }
+};
+
+// 저장 목록 불러오기
+async function loadSaves(){
+  const uid = getDeviceId();
+  const el  = document.getElementById('saves-list');
+  if(!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--mu)"><div style="font-size:32px">⏳</div><div style="font-family:Jua,sans-serif;margin-top:8px">불러오는 중...</div></div>';
+
+  try{
+    // 최상단에서 import된 query, where, getDocs 직접 사용
+    const q = query(collection(db,'saves'), where('uid','==',uid));
+    const snap = await getDocs(q);
+    const saves = snap.docs
+      .map(d=>({docId:d.id,...d.data()}))
+      .sort((a,b)=>(b.savedAt||0)-(a.savedAt||0));
+
+    if(!saves.length){
+      el.innerHTML = `<div style="text-align:center;padding:40px 0;color:var(--mu)">
+        <div style="font-size:40px;margin-bottom:10px">📭</div>
+        <div style="font-family:Jua,sans-serif">저장된 추천이 없어요</div>
+        <div style="font-size:12px;margin-top:6px">추천 결과 화면에서 💾 저장하기를 눌러보세요!</div>
+      </div>`;
+      return;
+    }
+
+    el.innerHTML = saves.map(s=>{
+      const date = new Date(s.savedAt).toLocaleDateString('ko-KR',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+      const chips = [s.cat.gender, s.cat.age+'살', s.cat.pers, ...(s.cat.mats||[])].filter(Boolean);
+      const topRecs = (s.recs||[]).slice(0,3);
+      return `<div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:16px;margin-bottom:12px">
+        <!-- 헤더 -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+          <div>
+            <div style="font-family:Jua,sans-serif;font-size:17px;color:var(--g1)">🐱 ${s.cat.name}(이)의 추천</div>
+            <div style="font-size:11px;color:var(--mu);margin-top:3px">${date}</div>
+          </div>
+          <button onclick="deleteSave('${s.docId}')" style="background:rgba(233,69,96,.15);border:1px solid rgba(233,69,96,.4);border-radius:8px;color:#e94560;padding:5px 10px;cursor:pointer;font-size:11px;flex-shrink:0">🗑️ 삭제</button>
+        </div>
+        <!-- 조건 칩 -->
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px">
+          ${chips.map(c=>`<span class="cp" style="font-size:11px;padding:3px 9px">${c}</span>`).join('')}
+          <span class="cp" style="font-size:11px;padding:3px 9px">예산 ${Number(s.cat.budget||0).toLocaleString()}원</span>
+          ${s.rods&&s.rods.length?`<span class="cp" style="font-size:11px;padding:3px 9px;color:#FF6B6B;border-color:rgba(255,107,107,.4)">🎣 낚시대 ${s.rods.length}개</span>`:''}
+        </div>
+        <!-- 추천 상품 미리보기 (상위 3개) -->
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">
+          ${topRecs.map((p,i)=>`
+            <div style="display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);border-radius:10px;padding:8px 10px">
+              <div style="width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,#2a1a4e,#1a2a4e);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:18px">
+                ${p.image?`<img src="${proxyImg(p.image)}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='🐱'"/>`:p.name.slice(0,1)||'🐱'}
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:12px;font-family:Jua,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div>
+                <div style="font-size:11px;color:var(--g1)">${p.price||''}</div>
+              </div>
+              <a href="${p.storeUrl||CFG.url}" target="_blank" onclick="recordStoreClick()" style="background:rgba(3,199,90,.15);border:1px solid rgba(3,199,90,.35);border-radius:7px;color:#03C75A;padding:4px 8px;font-size:10px;font-family:Jua,sans-serif;text-decoration:none;flex-shrink:0">보기</a>
+            </div>`).join('')}
+          ${s.recs&&s.recs.length>3?`<div style="text-align:center;font-size:11px;color:var(--mu);padding:4px">외 ${s.recs.length-3}개 더</div>`:''}
+        </div>
+        <!-- 합계 + 다시보기 -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid rgba(255,255,255,.1)">
+          <div>
+            <div style="font-size:11px;color:var(--mu)">💰 총 예상 금액</div>
+            <div style="font-family:Jua,sans-serif;font-size:16px;color:var(--g1)">${Number(s.totalPrice||0).toLocaleString()}원</div>
+          </div>
+          <button onclick="replayResult('${s.docId}')" style="background:linear-gradient(135deg,var(--g1),var(--g2));border:none;border-radius:10px;color:#1a1a2e;padding:9px 16px;cursor:pointer;font-family:Jua,sans-serif;font-size:13px">🔍 다시 보기</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    // 전역에 저장 데이터 캐시
+    window._savesCache = saves;
+    updateSavesBadge(saves.length);
+  } catch(e){
+    console.error('loadSaves error:',e);
+    el.innerHTML = `<div style="text-align:center;padding:30px;color:var(--mu)">불러오기 실패: ${e.message}</div>`;
+  }
+}
+
+// 저장 삭제
+window.deleteSave = async function(docId){
+  if(!confirm('이 저장 기록을 삭제할까요?')) return;
+  try{
+    await deleteDoc(doc(db,'saves',docId));
+    toast('삭제됐어요!');
+    loadSaves();
+  } catch(e){ toast('삭제 실패: '+e.message); }
+};
+
+// 저장된 추천 다시 보기
+window.replayResult = function(docId){
+  const save = window._savesCache?.find(s=>s.docId===docId);
+  if(!save){ toast('데이터를 찾을 수 없어요.'); return; }
+
+  // CAT 복원
+  CAT = {...CAT, ...save.cat, rods: (save.rods||[]).map((_,i)=>{ return null; }).filter(Boolean) };
+  // 저장된 rods 이름으로 RODS에서 id 매핑
+  CAT.rods = (save.rods||[]).map(sr=> (RODS.find(r=>r.name===sr.name)||{}).id ).filter(Boolean);
+
+  // 결과 화면에 저장된 recs를 직접 표시
+  window._replayRecs = save.recs;
+  window._recCount   = save.recs.length;
+
+  // 결과 화면 렌더링
+  showSavedResult(save);
+  toast('저장된 추천을 불러왔어요! 🐱');
+};
+
+// 저장된 결과 화면 렌더링
+function showSavedResult(save){
+  const recs     = save.recs||[];
+  const selRods  = save.rods||[];
+  const rodSum   = save.rodSum||0;
+
+  document.getElementById('res-ttl').textContent = `${save.cat.name}(이)의 추천 장난감`;
+  const chips = [save.cat.gender, save.cat.age+'살', save.cat.pers, ...(save.cat.mats||[]),
+    '예산 '+Number(save.cat.budget||0).toLocaleString()+'원'];
+  if(selRods.length) chips.push('🎣 낚시대 '+selRods.length+'개');
+  document.getElementById('res-cp').innerHTML = chips.filter(Boolean).map(c=>`<span class="cp">${c}</span>`).join('');
+  document.getElementById('store-all').href = CFG.url||'https://smartstore.naver.com/avivi';
+
+  // 낚시대 박스
+  let rodBox = '';
+  if(selRods.length){
+    rodBox = `<div style="width:100%;margin-bottom:12px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.35);border-radius:14px;padding:12px 16px">
+      <div style="font-family:Jua,sans-serif;font-size:13px;color:#FF6B6B;margin-bottom:6px">🎣 선택한 낚시대</div>
+      ${selRods.map(r=>`<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
+        <span>${r.icon||'🎣'} ${r.name}</span>
+        <span style="color:#FF6B6B;font-family:Jua,sans-serif">${Number(r.price||0).toLocaleString()}원</span>
+      </div>`).join('')}
+      <div style="border-top:1px solid rgba(255,107,107,.25);margin-top:7px;padding-top:7px;display:flex;justify-content:space-between;font-family:Jua,sans-serif;font-size:13px">
+        <span style="color:var(--mu)">낚시대 합계</span>
+        <span style="color:#FF6B6B">${Number(rodSum).toLocaleString()}원</span>
+      </div>
+    </div>`;
+  }
+  document.getElementById('res-rod-box').innerHTML = rodBox;
+
+  // 상품 카드 렌더링 (저장된 데이터 그대로)
+  selectedProds = new Set();
+  const use2col = recs.length >= 10;
+
+  if(!recs.length){
+    document.getElementById('res-cards').innerHTML = `<div class="pc" style="text-align:center;padding:30px"><div style="font-size:46px">😿</div></div>`;
+  } else if(use2col){
+    document.getElementById('res-cards').innerHTML =
+      `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">` +
+      recs.map((p,i)=>{
+        const pid = p.id||('sv_'+i);
+        return `<div class="pc sel-card" data-pid="${pid}" data-price="${parsePrice(p.price)||0}" onclick="toggleProd('${pid}')"
+          style="margin-bottom:0;padding:12px;cursor:pointer;position:relative;user-select:none">
+          <div id="ck_${pid}" style="position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;z-index:1">○</div>
+          <div style="width:100%;aspect-ratio:1;border-radius:10px;background:linear-gradient(135deg,#2a1a4e,#1a2a4e);overflow:hidden;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:28px">
+            ${p.image?`<img src="${proxyImg(p.image)}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='🐱'"/>`:p.name?.slice(0,1)||'🐱'}
+          </div>
+          <div style="font-family:Jua,sans-serif;font-size:12px;line-height:1.3;margin-bottom:4px">${p.name}</div>
+          <div style="font-family:Jua,sans-serif;font-size:14px;color:var(--g1)">${formatPrice(p.price)}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:4px">${(p.tags||[]).slice(0,2).map(t=>`<span class="ptg">#${t}</span>`).join('')}</div>
+          <a href="${p.storeUrl||CFG.url}" target="_blank" onclick="event.stopPropagation();recordStoreClick()" style="display:block;text-align:center;margin-top:8px;padding:6px 4px;background:linear-gradient(135deg,#03C75A,#029944);border-radius:8px;color:#fff;font-size:11px;font-family:Jua,sans-serif;text-decoration:none">🛒 스토어 보기</a>
+        </div>`;
+      }).join('') + `</div>`;
+  } else {
+    document.getElementById('res-cards').innerHTML = recs.map((p,i)=>{
+      const pid = p.id||('sv_'+i);
+      return `<div class="pc sel-card" data-pid="${pid}" data-price="${parsePrice(p.price)||0}"
+        style="cursor:pointer;user-select:none;position:relative" onclick="toggleProd('${pid}')">
+        <div id="ck_${pid}" style="position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .2s;z-index:1">○</div>
+        <div class="pi2">
+          <div class="pt">${th(p)}</div>
+          <div class="pif">
+            <div class="pn2">${p.name}</div>
+            <div class="pde">${p.description||''}</div>
+            <div class="ppr">${formatPrice(p.price)}</div>
+          </div>
+        </div>
+        <div class="ptgs">${(p.tags||[]).map(t=>`<span class="ptg">#${t}</span>`).join('')}</div>
+        <a class="btn bgr" href="${p.storeUrl||CFG.url}" target="_blank" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:5px" onclick="event.stopPropagation();recordStoreClick()">🛒 스마트스토어에서 보기</a>
+      </div>`;
+    }).join('');
+  }
+
+  // 저장 버튼 상태 변경 (이미 저장된 항목)
+  const btn = document.getElementById('btn-save-res');
+  if(btn){ btn.textContent='✅ 저장된 추천'; btn.style.background='rgba(255,255,255,.1)'; btn.disabled=true; }
+
+  updateSelSummary();
+  go('res');
+}
+
+// 홈 뱃지 업데이트
+function updateSavesBadge(cnt){
+  const badge = document.getElementById('saves-badge');
+  if(!badge) return;
+  if(!cnt){ badge.style.display='none'; return; }
+  badge.style.display='inline-block';
+  badge.textContent = cnt+'개';
+}
+
+// saves 화면 접근 시 자동 로드
+window.go = function(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  window.scrollTo(0,0);
+  if(id==='age')    rAge();
+  if(id==='mat')    rMat();
+  if(id==='pers')   rPers();
+  if(id==='budget'){ CAT.budget=CAT.budget||14000; window.rBudget(); }
+  if(id==='rod')    rRodScreen();
+  if(id==='saves')  loadSaves();
+  // 저장 버튼 초기화 (결과화면 재진입 시)
+  if(id==='res'){
+    const btn=document.getElementById('btn-save-res');
+    if(btn){ btn.textContent='💾 이 추천 저장하기'; btn.style.background=''; btn.disabled=false; }
+  }
+};
+
 window.restart = function(){
   CAT={name:"",gender:"",age:1,mats:[],pers:"",budget:14000,rods:[],rodSkip:false};
   document.getElementById('cat-name').value='';
   document.getElementById('gm').classList.remove('s');
   document.getElementById('gf').classList.remove('s');
-  document.getElementById('btn-n').disabled=true;
+  // btn-n은 항상 활성화
   go('home');
 };
 
@@ -1359,12 +1929,14 @@ window.savePers = async function(){
 
 // ── 낚시대/막대 선택 ──
 let RODS = [
-  {id:'r1', name:'30cm 깃털 낚싯대', price:4000, desc:'가볍고 짧아서 좁은 공간에서도 OK', icon:'🪶'},
-  {id:'r2', name:'50cm 깃털 낚싯대', price:5500, desc:'가장 인기 있는 기본 낚싯대', icon:'🎣'},
-  {id:'r3', name:'70cm 깃털 낚싯대', price:7000, desc:'길어서 고양이가 더 신나게 뛰어요', icon:'🎣'},
-  {id:'r4', name:'끈 낚싯대 30cm', price:3500, desc:'끈 소재를 좋아하는 아이에게 추천', icon:'🧵'},
-  {id:'r5', name:'비닐 바스락 낚싯대', price:5000, desc:'바스락 소리로 사냥 본능 자극', icon:'🛍️'},
-  {id:'r6', name:'LED 빛 낚싯대', price:9000, desc:'어둠 속에서도 신나는 빛 장난감', icon:'✨'},
+  {id:'r1', name:'고스틱 막대',        price:12000, desc:'고스틱 전용 리필만 사용 가능',      icon:'🪄', type:'gostick'},
+  {id:'r2', name:'2단 낚시대',          price:4000,  desc:'일반 리필 사용 가능',               icon:'🎣', type:'normal'},
+  {id:'r3', name:'3단 낚시대',          price:5000,  desc:'일반 리필 사용 가능',               icon:'🎣', type:'normal'},
+  {id:'r4', name:'4단 낚시대',          price:6000,  desc:'일반 리필 사용 가능',               icon:'🎣', type:'normal'},
+  {id:'r5', name:'아크릴 와이어 막대',   price:5500,  desc:'일반 리필 사용 가능',               icon:'🔮', type:'normal'},
+  {id:'r6', name:'플라스틱 와이어 막대', price:4500,  desc:'일반 리필 사용 가능',               icon:'🪢', type:'normal'},
+  {id:'r7', name:'아크릴 막대',         price:5000,  desc:'일반 리필 사용 가능',               icon:'💎', type:'normal'},
+  {id:'r8', name:'플라스틱 막대',       price:3500,  desc:'일반 리필 사용 가능',               icon:'🦯', type:'normal'},
 ];
 
 window.rRodScreen = function(){
@@ -1391,20 +1963,44 @@ function renderRodList(){
     el.innerHTML = '<div style="text-align:center;color:var(--mu);font-size:13px;padding:20px">등록된 낚시대가 없어요.<br>관리자 패널에서 추가해주세요!</div>';
     return;
   }
-  el.innerHTML = RODS.map(r=>{
+
+  // 고스틱 / 일반 그룹으로 분리
+  const gostickRods = RODS.filter(r => r.type==='gostick' || /고스틱/i.test(r.name));
+  const normalRods  = RODS.filter(r => r.type==='normal'  || (!r.type && !/고스틱/i.test(r.name)));
+
+  function rodCard(r){
     const sel = CAT.rods && CAT.rods.includes(r.id);
-    return `<div onclick="toggleRod('${r.id}')" style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:${sel?'rgba(255,217,61,.12)':'rgba(255,255,255,.06)'};border:1.5px solid ${sel?'var(--g1)':'var(--border)'};border-radius:14px;cursor:pointer;transition:all .2s">
-      <div style="font-size:28px;flex-shrink:0">${r.icon||'🎣'}</div>
-      <div style="flex:1">
+    const isGostick = r.type==='gostick' || /고스틱/i.test(r.name);
+    const typeColor = isGostick ? '#c084fc' : '#4ECDC4';
+    const typeLabel = isGostick ? '고스틱 전용 리필' : '일반 리필';
+    return `<div onclick="toggleRod('${r.id}')" style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:${sel?'rgba(255,217,61,.12)':'rgba(255,255,255,.06)'};border:1.5px solid ${sel?'var(--g1)':'var(--border)'};border-radius:14px;cursor:pointer;transition:all .2s;margin-bottom:6px">
+      <div style="font-size:26px;flex-shrink:0">${r.icon||'🎣'}</div>
+      <div style="flex:1;min-width:0">
         <div style="font-family:Jua,sans-serif;font-size:14px;color:${sel?'var(--g1)':'var(--tx)'}">${r.name}</div>
         <div style="font-size:11px;color:var(--mu);margin-top:2px">${r.desc||''}</div>
+        <span style="display:inline-block;margin-top:4px;font-size:10px;padding:2px 7px;border-radius:10px;background:rgba(${isGostick?'192,132,252':'78,205,196'},.15);color:${typeColor};border:1px solid ${typeColor}4d">${typeLabel}</span>
       </div>
       <div style="text-align:right;flex-shrink:0">
         <div style="font-family:Jua,sans-serif;font-size:14px;color:var(--g1)">${Number(r.price||0).toLocaleString()}원</div>
         <div style="font-size:18px;margin-top:2px">${sel?'✅':'⬜'}</div>
       </div>
     </div>`;
-  }).join('');
+  }
+
+  let html = '';
+  if(gostickRods.length){
+    html += `<div style="font-size:11px;color:#c084fc;font-family:Jua,sans-serif;margin-bottom:5px;padding:0 2px">🪄 고스틱 막대 — 고스틱 전용 리필 추천</div>`;
+    html += gostickRods.map(rodCard).join('');
+  }
+  if(normalRods.length){
+    if(gostickRods.length) html += `<div style="height:10px"></div>`;
+    html += `<div style="font-size:11px;color:#4ECDC4;font-family:Jua,sans-serif;margin-bottom:5px;padding:0 2px">🎣 일반 막대 — 일반 리필 추천</div>`;
+    html += normalRods.map(rodCard).join('');
+  }
+  if(!gostickRods.length && !normalRods.length){
+    html = RODS.map(rodCard).join('');
+  }
+  el.innerHTML = html;
 }
 
 window.toggleRod = function(id){
@@ -1420,11 +2016,12 @@ function updRodTotal(){
   const selRods = RODS.filter(r => CAT.rods && CAT.rods.includes(r.id));
   const rodSum = selRods.reduce((s,r)=>s+(Number(r.price)||0), 0);
   const toyBudget = CAT.budget || 14000;
+
   if(selRods.length > 0){
     wrap.style.display = 'block';
     document.getElementById('rod-total-val').textContent = Number(toyBudget + rodSum).toLocaleString()+'원';
     document.getElementById('rod-toy-budget').textContent = Number(toyBudget).toLocaleString()+'원';
-    document.getElementById('rod-rod-sum').textContent = Number(rodSum).toLocaleString()+'원';
+    document.getElementById('rod-rod-sum').textContent    = Number(rodSum).toLocaleString()+'원';
   } else {
     wrap.style.display = 'none';
   }
@@ -1464,6 +2061,8 @@ function renderRodAdmin(){
 window.addRod = function(){
   const n = document.getElementById('new-rod-n').value.trim();
   if(!n){ toast('낚시대 이름을 입력해주세요!'); return; }
+  // 이름에 '고스틱' 포함 시 자동으로 gostick 타입 설정
+  const autoType = /고스틱/i.test(n) ? 'gostick' : 'normal';
   RODS.push({
     id: 'r'+Date.now(),
     name: n,
@@ -1471,10 +2070,11 @@ window.addRod = function(){
     desc: document.getElementById('new-rod-d').value.trim(),
     icon: document.getElementById('new-rod-i').value.trim()||'🎣',
     image: document.getElementById('new-rod-img').value.trim(),
+    type: autoType,
   });
   ['new-rod-n','new-rod-p','new-rod-d','new-rod-i','new-rod-img'].forEach(id=>document.getElementById(id).value='');
   renderRodAdmin();
-  toast('낚시대가 추가됐어요! 🎣');
+  toast('낚시대가 추가됐어요! 🎣 ('+( autoType==='gostick'?'고스틱 전용':'일반')+' 타입으로 설정됨)');
 };
 
 window.delRod = function(idx){
@@ -1629,6 +2229,7 @@ function showCsvError(msg){
 window._recCount = 10;
 window.setRecCount = function(n){
   window._recCount = n;
+  window._recPage  = 0; // 탭 변경 시 페이지 초기화
   document.querySelectorAll('.rcnt-btn').forEach(b=>{
     const active = parseInt(b.dataset.cnt) === n;
     b.style.background = active ? 'rgba(255,217,61,.18)' : 'rgba(255,255,255,.08)';
@@ -1640,37 +2241,440 @@ window.setRecCount = function(n){
   }
 };
 
+// ── 다른 제품 더보기 ──
+window.loadMoreRecs = function(){
+  const cnt   = window._recCount || 4;
+  const total = _allScoredCache.length;
+  if(total === 0) return;
+
+  window._recPage = (window._recPage || 0) + 1;
+  // 전체 순환: 마지막 페이지 넘으면 처음으로
+  const maxPage = Math.ceil(total / cnt) - 1;
+  if(window._recPage > maxPage){
+    window._recPage = 0;
+    toast('처음 추천으로 돌아왔어요! 🔄');
+  } else {
+    toast(`${window._recPage + 1}번째 추천 세트예요! ✨`);
+  }
+  renderCards();
+};
+
+// ── 카드만 다시 그리기 (헤더/낚시대 박스는 유지) ──
+function renderCards(){
+  const recs     = getRecs();
+  const recCount = window._recCount || 4;
+  const use2col  = recCount >= 10;
+  const total    = _allScoredCache.length;
+  const cnt      = recCount;
+  const page     = window._recPage || 0;
+  const maxPage  = Math.ceil(total / cnt) - 1;
+
+  selectedProds = new Set();
+  // 전체선택 버튼 초기화
+  const selAllBtn = document.getElementById('btn-sel-all');
+  if(selAllBtn) selAllBtn.textContent = '☑️ 전체 선택';
+
+  if(!recs.length){
+    document.getElementById('res-cards').innerHTML = `<div class="pc" style="text-align:center;padding:30px"><div style="font-size:46px">😿</div><p style="margin-top:10px;color:var(--mu)">조건에 맞는 상품이 없어요.</p></div>`;
+    document.getElementById('res-more-wrap').style.display = 'none';
+    updateSelSummary(); return;
+  }
+
+  if(use2col){
+    document.getElementById('res-cards').innerHTML =
+      `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">` +
+      recs.map((p,i)=>{
+        const pid = p.id||('rec_'+i);
+        return `<div class="pc sel-card" data-pid="${pid}" data-price="${parsePrice(p.price)||0}" onclick="toggleProd('${pid}')"
+          style="margin-bottom:0;padding:12px;cursor:pointer;position:relative;user-select:none">
+          <div id="ck_${pid}" style="position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;z-index:1">○</div>
+          <div style="width:100%;aspect-ratio:1;border-radius:10px;background:linear-gradient(135deg,#2a1a4e,#1a2a4e);overflow:hidden;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:28px">
+            ${p.image?`<img src="${proxyImg(p.image)}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='🐱'"/>`:pe(p)}
+          </div>
+          <div style="font-family:Jua,sans-serif;font-size:12px;line-height:1.3;margin-bottom:4px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${p.name}</div>
+          <div style="font-family:Jua,sans-serif;font-size:14px;color:var(--g1)">${formatPrice(p.price)}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:4px">${(p.tags||[]).slice(0,2).map(t=>`<span class="ptg">#${t}</span>`).join('')}</div>
+          <a href="${p.storeUrl||CFG.url}" target="_blank" onclick="event.stopPropagation();recordStoreClick()" style="display:block;text-align:center;margin-top:8px;padding:6px 4px;background:linear-gradient(135deg,#03C75A,#029944);border-radius:8px;color:#fff;font-size:11px;font-family:Jua,sans-serif;text-decoration:none">🛒 스토어 보기</a>
+        </div>`;
+      }).join('') + `</div>`;
+  } else {
+    document.getElementById('res-cards').innerHTML = recs.map((p,i)=>{
+      const pid = p.id||('rec_'+i);
+      return `<div class="pc sel-card" data-pid="${pid}" data-price="${parsePrice(p.price)||0}"
+        style="cursor:pointer;user-select:none;position:relative" onclick="toggleProd('${pid}')">
+        <div id="ck_${pid}" style="position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .2s;z-index:1">○</div>
+        <div class="pi2">
+          <div class="pt">${th(p)}</div>
+          <div class="pif">
+            <div class="pn2">${p.name}</div>
+            <div class="pde">${p.description||''}</div>
+            <div class="ppr">${formatPrice(p.price)}</div>
+          </div>
+        </div>
+        <div class="ptgs">${(p.tags||[]).map(t=>`<span class="ptg">#${t}</span>`).join('')}</div>
+        <a class="btn bgr" href="${p.storeUrl||CFG.url}" target="_blank" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:5px" onclick="event.stopPropagation();recordStoreClick()">🛒 스마트스토어에서 보기</a>
+      </div>`;
+    }).join('');
+  }
+
+  // 더보기 버튼: 전체 필터된 상품 수가 현재 탭보다 많을 때 표시
+  const moreWrap = document.getElementById('res-more-wrap');
+  if(moreWrap){
+    // 낚시대 타입 필터 적용된 전체 상품 수
+    const totalFiltered = filterByRodType(PRODS).length;
+    if(totalFiltered > cnt){
+      moreWrap.style.display = 'block';
+      const btn = moreWrap.querySelector('button');
+      if(btn){
+        const remaining = total - (page+1)*cnt;
+        const isLast = remaining <= 0;
+        const nextCount = isLast ? Math.min(cnt, total) : Math.min(remaining, cnt);
+        btn.innerHTML = isLast
+          ? `🔄 처음 추천으로 돌아가기`
+          : `🔄 다른 제품 더보기 <span style="font-size:12px;opacity:.7">(${nextCount}개 더)</span>`;
+      }
+    } else {
+      moreWrap.style.display = 'none';
+    }
+  }
+
+  updateSelSummary();
+}
+
 // ── 장바구니 URL ── 상품 페이지로 이동 (네이버 장바구니 API 제한으로 직접 담기 불가)
 window.cartUrl = function(p){
   return p.storeUrl || CFG.url || '#';
 };
 
-// ── 카카오톡 공유 (SDK 정식 연동) ──
+// ── 공유 공통 함수 ──
+async function doShare(dataUrl, catName){
+  const ua = navigator.userAgent;
+  const isKakao  = /KAKAOTALK/i.test(ua);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
+  const appUrl   = 'https://abibi-cattoys-mbti.vercel.app';
 
+  // ── 카카오톡 인앱: 외부 브라우저 열기 유도 ──
+  if(isKakao){
+    showKakaoGuide(appUrl);
+    return;
+  }
 
-window.shareKakao = function(){
-  const catName = document.getElementById('res-ttl')?.textContent || '추천 결과';
-  const chips   = Array.from(document.querySelectorAll('#res-cp .cp')).map(c=>c.textContent);
-  const recs    = Array.from(document.querySelectorAll('#res-cards .pc'));
+  // navigator.share 없음 (PC 등)
+  if(!navigator.share){
+    const link = document.createElement('a');
+    link.download = '아비비고물상_추천결과.png';
+    link.href = dataUrl; link.click();
+    toast('이미지가 저장됐어요! 📸');
+    return;
+  }
+
+  // 모바일 일반 브라우저: 파일 공유 시도
+  if(isMobile){
+    try{
+      const res  = await fetch(dataUrl);
+      const blob = await res.blob();
+      const file = new File([blob], '아비비고물상_추천결과.png', {type:'image/png'});
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({
+          files: [file],
+          title: '🐱 '+catName+' — 아비비의고물상',
+          text:  '우리 아이 맞춤 장난감 추천!',
+        });
+        toast('공유됐어요! 💬');
+        return;
+      }
+    } catch(shareErr){
+      if(shareErr.name === 'AbortError') return;
+    }
+    showImgOverlay(dataUrl);
+    toast('이미지를 길게 눌러 저장 후 공유하세요! 📸');
+    return;
+  }
+
+  // PC: 다운로드
+  const link = document.createElement('a');
+  link.download = '아비비고물상_추천결과.png';
+  link.href = dataUrl; link.click();
+  toast('이미지가 저장됐어요! 📸');
+}
+
+// ── 카카오톡 인앱 브라우저 외부 열기 안내 ──
+function showKakaoGuide(appUrl){
+  const old = document.getElementById('kakao-guide-ov');
+  if(old) old.remove();
+
+  const ov = document.createElement('div');
+  ov.id = 'kakao-guide-ov';
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px';
+
+  const isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const guideStep = isIos
+    ? `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="width:26px;height:26px;background:var(--g1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1a1a2e;font-weight:bold;flex-shrink:0">1</span><span>오른쪽 하단 <b>···</b> 버튼 탭</span></div>
+     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="width:26px;height:26px;background:var(--g1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1a1a2e;font-weight:bold;flex-shrink:0">2</span><span><b>Safari로 열기</b> 선택</span></div>
+     <div style="display:flex;align-items:center;gap:10px"><span style="width:26px;height:26px;background:var(--g1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1a1a2e;font-weight:bold;flex-shrink:0">3</span><span>공유하기 버튼 눌러 카카오톡 선택</span></div>`
+    : `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="width:26px;height:26px;background:var(--g1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1a1a2e;font-weight:bold;flex-shrink:0">1</span><span>오른쪽 상단 <b>⋮</b> 버튼 탭</span></div>
+     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="width:26px;height:26px;background:var(--g1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1a1a2e;font-weight:bold;flex-shrink:0">2</span><span><b>다른 앱으로 열기</b> → 크롬 선택</span></div>
+     <div style="display:flex;align-items:center;gap:10px"><span style="width:26px;height:26px;background:var(--g1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#1a1a2e;font-weight:bold;flex-shrink:0">3</span><span>공유하기 버튼 눌러 카카오톡 선택</span></div>`;
+
+  ov.innerHTML = `
+    <div style="width:100%;max-width:360px;background:#1a1a2e;border:1.5px solid rgba(255,217,61,.4);border-radius:20px;padding:24px">
+      <div style="text-align:center;margin-bottom:18px">
+        <div style="font-size:36px">🌐</div>
+        <div style="font-family:Jua,sans-serif;font-size:18px;color:var(--g1);margin-top:8px">외부 브라우저에서 열기</div>
+        <div style="font-size:12px;color:var(--mu);margin-top:6px">카카오톡 안에서는 공유 기능이 제한돼요.<br>아래 방법으로 외부 브라우저에서 여세요!</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border-radius:14px;padding:16px;font-size:13px;color:var(--tx);line-height:1.8;margin-bottom:16px">
+        ${guideStep}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button onclick="window.open('${appUrl}','_blank')" style="width:100%;background:linear-gradient(135deg,var(--g1),#ffb700);border:none;border-radius:12px;color:#1a1a2e;padding:13px;cursor:pointer;font-family:Jua,sans-serif;font-size:14px">
+          🌐 외부 브라우저로 열기
+        </button>
+        <button onclick="navigator.clipboard&&navigator.clipboard.writeText('${appUrl}').then(()=>toast('링크 복사됐어요! 붙여넣기 후 브라우저에서 여세요 📋'))" style="width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:12px;color:var(--tx);padding:12px;cursor:pointer;font-family:Jua,sans-serif;font-size:13px">
+          📋 링크 복사하기
+        </button>
+        <button onclick="document.getElementById('kakao-guide-ov').remove()" style="width:100%;background:none;border:none;color:var(--mu);padding:8px;cursor:pointer;font-size:12px">
+          닫기
+        </button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(ov);
+}
+
+// ── 공유하기 (전체 추천) ──
+window.shareWithImage = async function(){
+  toast('공유 이미지 생성 중... 📸');
+  try{
+    const dataUrl = await buildResultImage();
+    if(!dataUrl){ toast('이미지 생성 실패. 다시 시도해주세요.'); return; }
+    const catName = document.getElementById('res-ttl')?.textContent || '추천 결과';
+    await doShare(dataUrl, catName);
+  } catch(e){
+    console.error('shareWithImage error:', e);
+    toast('공유 중 오류가 발생했어요. 다시 시도해주세요.');
+  }
+};
+
+// ── 결과 이미지 빌드 (공유/저장 공통, selPids=선택상품만, 없으면 전체) ──
+async function buildResultImage(selPids){
+  const W = 400, PAD = 16, SCALE = 2;
+  const IMG_S = 76, CARD_H = 110, CARD_GAP = 8;
+
+  // 전체 또는 선택된 상품만
+  const allRecs = getRecs();
+  const recs = selPids
+    ? allRecs.filter(p => selPids.has(p.id) || selPids.has('rec_'+allRecs.indexOf(p)))
+    : allRecs;
+  const catName = (document.getElementById('res-ttl')?.textContent || '추천 장난감').trim();
+  const chips  = Array.from(document.querySelectorAll('#res-cp .cp')).map(c=>c.textContent.trim());
+  const selRods = RODS.filter(r=>CAT.rods&&CAT.rods.includes(r.id));
+  const rodSum  = selRods.reduce((s,r)=>s+(Number(r.price)||0),0);
+
+  const headerH = 86;
+  const chipsH  = chips.length ? 30 : 0;
+  const rodH    = selRods.length ? (selRods.length * 22 + 48) : 0;
+  const cardsH  = recs.length * (CARD_H + CARD_GAP);
+  const priceH  = recs.length ? 56 : 0;
+  const wmH     = 32;
+  const totalH  = headerH + chipsH + rodH + 12 + cardsH + priceH + wmH + PAD*2;
+
+  const cv = document.createElement('canvas');
+  cv.width  = W * SCALE;
+  cv.height = totalH * SCALE;
+  const ctx = cv.getContext('2d');
+  ctx.scale(SCALE, SCALE);
+
+  // ── 배경 ──
+  ctx.fillStyle = '#0d0b1e';
+  ctx.fillRect(0, 0, W, totalH);
+  const grd = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, 350);
+  grd.addColorStop(0, 'rgba(80,40,180,0.3)');
+  grd.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = grd; ctx.fillRect(0, 0, W, totalH);
+
+  let y = PAD;
+
+  // ── 헤더 ──
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#FFD93D';
+  ctx.font = 'bold 20px sans-serif';
+  ctx.fillText('🐱 ' + catName, W/2, y+26);
+  y += 38;
+
+  if(chips.length){
+    ctx.font = '10px sans-serif';
+    ctx.fillStyle = 'rgba(255,217,61,0.7)';
+    // 너무 길면 두 줄로
+    const chipStr = chips.join(' · ');
+    if(ctx.measureText(chipStr).width > W-PAD*2){
+      const half = Math.ceil(chips.length/2);
+      ctx.fillText(chips.slice(0,half).join(' · '), W/2, y+12);
+      ctx.fillText(chips.slice(half).join(' · '), W/2, y+24);
+      y += 36;
+    } else {
+      ctx.fillText(chipStr, W/2, y+14);
+      y += 24;
+    }
+  }
+
+  // 구분선
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(PAD, y); ctx.lineTo(W-PAD, y); ctx.stroke();
+  y += 12;
+
+  // ── 낚시대 박스 ──
+  if(selRods.length){
+    const rh = selRods.length*20 + 38;
+    roundRect(ctx, PAD, y, W-PAD*2, rh, 9);
+    ctx.fillStyle = 'rgba(255,107,107,0.12)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,107,107,0.4)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.fillStyle='#FF6B6B'; ctx.font='bold 11px sans-serif'; ctx.textAlign='left';
+    ctx.fillText('🎣 선택한 낚시대', PAD+10, y+14);
+    selRods.forEach((r,ri)=>{
+      ctx.fillStyle='rgba(255,255,255,0.8)'; ctx.font='11px sans-serif'; ctx.textAlign='left';
+      ctx.fillText((r.icon||'🎣')+' '+r.name, PAD+10, y+28+ri*20);
+      ctx.fillStyle='#FF6B6B'; ctx.font='bold 11px sans-serif'; ctx.textAlign='right';
+      ctx.fillText(Number(r.price||0).toLocaleString()+'원', W-PAD-10, y+28+ri*20);
+    });
+    y += rh + 10;
+  }
+
+  // ── 상품 카드 (PRODS 데이터에서 직접) ──
+  for(let i=0; i<recs.length; i++){
+    const p      = recs[i];
+    const isBest = i === 0;
+    const name   = (p.name||'').trim();
+    const desc   = (p.description||'').trim();
+    const price  = formatPrice(p.price);
+    const tags   = (p.tags||[]).slice(0,3).map(t=>'#'+t).join(' ');
+    const imgSrc = p.image ? proxyImg(p.image) : '';
+
+    // 카드 배경
+    roundRect(ctx, PAD, y, W-PAD*2, CARD_H, 10);
+    ctx.fillStyle = isBest ? 'rgba(255,217,61,0.1)' : 'rgba(255,255,255,0.06)';
+    ctx.fill();
+    ctx.strokeStyle = isBest ? '#FFD93D' : 'rgba(255,255,255,0.13)';
+    ctx.lineWidth   = isBest ? 2 : 1;
+    ctx.stroke();
+
+    // BEST 뱃지
+    if(isBest){
+      roundRect(ctx, W-PAD-68, y, 68, 20, [0,10,0,10]);
+      ctx.fillStyle = '#FFD93D'; ctx.fill();
+      ctx.fillStyle = '#1a1a2e'; ctx.font='bold 9px sans-serif'; ctx.textAlign='right';
+      ctx.fillText('👑 BEST 추천', W-PAD-5, y+13);
+    }
+
+    // 번호
+    ctx.fillStyle = isBest ? '#FFD93D' : 'rgba(255,255,255,0.3)';
+    ctx.font = 'bold 11px sans-serif'; ctx.textAlign='left';
+    ctx.fillText(i===0?'':String(i+1)+'.', PAD+10, y+16);
+
+    // 이미지 영역
+    const ix = PAD+10, iy = y+10, is2 = CARD_H-20;
+    roundRect(ctx, ix, iy, is2, is2, 8);
+    ctx.fillStyle = '#1e1040'; ctx.fill();
+
+    if(imgSrc){
+      try{ await drawImg(ctx, imgSrc, ix, iy, is2, is2, 8); }
+      catch(e){
+        ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.font='24px serif';
+        ctx.textAlign='center'; ctx.fillText('🐱', ix+is2/2, iy+is2/2+8);
+      }
+    } else {
+      ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.font='24px serif';
+      ctx.textAlign='center'; ctx.fillText('🐱', ix+is2/2, iy+is2/2+8);
+    }
+
+    // 텍스트
+    const tx = PAD+10+is2+10;
+    const maxTW = W-PAD-tx-6;
+    ctx.textAlign='left';
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.fillText(trimText(ctx, name, maxTW), tx, y+20);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = '10px sans-serif';
+    ctx.fillText(trimText(ctx, desc, maxTW), tx, y+36);
+
+    ctx.fillStyle = '#FFD93D';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.fillText(price||'가격 미정', tx, y+56);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.font = '9px sans-serif';
+    ctx.fillText(trimText(ctx, tags, maxTW), tx, y+72);
+
+    y += CARD_H + CARD_GAP;
+  }
+
+  // ── 가격 요약 (선택된 상품 합계 + 낚시대) ──
+  if(recs.length){
+    // 선택된 상품 합계 (selPids가 있으면 그 상품들, 없으면 전체)
+    const toyTotal = recs.reduce((s,p)=>(s+(parsePrice(p.price)||0)),0);
+    const grandTotal = toyTotal + rodSum;
+    if(grandTotal > 0){
+      y += 6;
+      const label = selPids
+        ? '🛒 선택한 상품'+(rodSum>0?' + 낚시대':'')+' 합계 ('+recs.length+'개)'
+        : '🛒 추천 상품'+(rodSum>0?' + 낚시대':'')+' 합계 ('+recs.length+'개)';
+      roundRect(ctx, PAD, y, W-PAD*2, 44, 9);
+      ctx.fillStyle = 'rgba(255,217,61,0.1)'; ctx.fill();
+      ctx.strokeStyle = 'rgba(255,217,61,0.3)'; ctx.lineWidth=1; ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.font='10px sans-serif'; ctx.textAlign='left';
+      ctx.fillText(label, PAD+10, y+14);
+      ctx.fillStyle = '#FFD93D'; ctx.font='bold 17px sans-serif'; ctx.textAlign='right';
+      ctx.fillText(grandTotal.toLocaleString()+'원', W-PAD-10, y+36);
+      y += 52;
+    }
+  }
+
+  // ── 워터마크 ──
+  y += 6;
+  ctx.textAlign='center'; ctx.fillStyle='rgba(255,217,61,0.45)'; ctx.font='9px sans-serif';
+  ctx.fillText('🐱 아비비의고물상 · abibi-cattoys-mbti.vercel.app', W/2, y+14);
+
+  return cv.toDataURL('image/png');
+}
+
+// ── 앱 공유하기 ──
+window.shareApp = async function(){
   const appUrl  = 'https://abibi-cattoys-mbti.vercel.app';
+  const title   = '🐱 아비비의고물상 — 고양이 장난감 추천';
+  const text    = '우리 고양이 맞춤 장난감을 추천해주는 앱이에요!\n재질, 성격, 예산에 딱 맞는 상품을 찾아드려요 🎁';
+  const ua      = navigator.userAgent;
+  const isKakao = /KAKAOTALK/i.test(ua);
 
-  const recLines = recs.slice(0,3).map((card,i)=>{
-    const name  = card.querySelector('.pn2')?.textContent?.trim() || '';
-    const price = card.querySelector('.ppr')?.textContent?.trim() || '';
-    return (i===0?'👑':'🎁') + ' ' + name + ' — ' + price;
-  }).join('\n');
-
-  const shareText = '🐱 ' + catName + '\n' + chips.join(' · ') + '\n\n' + recLines + '\n\n아비비의고물상에서 우리 아이 맞춤 장난감을 찾아보세요!\n' + appUrl;
+  if(isKakao){
+    showKakaoGuide(appUrl);
+    return;
+  }
 
   if(navigator.share){
-    navigator.share({
-      title: '🐱 ' + catName + ' — 아비비의고물상',
-      text: shareText,
-      url: appUrl,
-    }).then(()=>toast('공유됐어요! 💬'))
-    .catch((e)=>{ if(e.name !== 'AbortError') copyLink(); });
+    try{
+      await navigator.share({ title, text, url: appUrl });
+      toast('공유됐어요! 💬');
+      return;
+    } catch(e){
+      if(e.name === 'AbortError') return;
+    }
+  }
+
+  // 공유 불가 시 링크 복사
+  if(navigator.clipboard){
+    await navigator.clipboard.writeText(appUrl);
+    toast('링크가 복사됐어요! 친구에게 붙여넣기 해주세요 📋');
   } else {
-    copyLink();
+    const el = document.createElement('textarea');
+    el.value = appUrl;
+    document.body.appendChild(el);
+    el.select(); document.execCommand('copy');
+    document.body.removeChild(el);
+    toast('링크가 복사됐어요! 친구에게 붙여넣기 해주세요 📋');
   }
 };
 
@@ -1688,132 +2692,6 @@ function copyLink(){
 }
 
 // ── 결과 캡처/저장 ──
-window.captureResult = async function(){
-  toast('이미지 생성 중... 📸');
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-  try{
-    // ── 캡처용 깔끔한 클론 div 생성 ──
-    const src = document.getElementById('capture-area');
-
-    // 숨겨진 렌더 컨테이너 생성
-    const container = document.createElement('div');
-    container.style.cssText = [
-      'position:fixed',
-      'left:-9999px',
-      'top:0',
-      'width:420px',
-      'background:#0d0b1e',
-      'padding:20px',
-      'font-family:Noto Sans KR,sans-serif',
-      'color:#fff',
-      'z-index:-1',
-    ].join(';');
-    document.body.appendChild(container);
-
-    // 내용 복제 + CSS 변수 인라인으로 교체
-    const clone = src.cloneNode(true);
-    clone.style.cssText = 'width:100%;background:#0d0b1e;padding:0';
-
-    // backdrop-filter 제거 (html2canvas가 못 읽음)
-    clone.querySelectorAll('*').forEach(el=>{
-      const cs = window.getComputedStyle(el);
-      // 배경색 인라인 적용
-      const bg = cs.backgroundColor;
-      const color = cs.color;
-      if(bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent'){
-        el.style.backgroundColor = bg;
-      }
-      if(color) el.style.color = color;
-      // backdrop-filter 제거
-      el.style.backdropFilter = 'none';
-      el.style.webkitBackdropFilter = 'none';
-      // 카드 배경 강제 적용
-      if(el.classList && (el.classList.contains('pc') || el.classList.contains('rh'))){
-        el.style.backgroundColor = 'rgba(255,255,255,0.1)';
-        el.style.border = '1px solid rgba(255,255,255,0.2)';
-      }
-    });
-
-    // 워터마크
-    const wm = document.createElement('div');
-    wm.style.cssText = 'text-align:center;padding:14px 0 4px;font-size:12px;color:rgba(255,217,61,0.7);letter-spacing:1px';
-    wm.textContent = '🐱 아비비의고물상 | abibi-cattoys-mbti.vercel.app';
-    clone.appendChild(wm);
-    container.appendChild(clone);
-
-    // html2canvas 로드
-    if(!window.html2canvas){
-      await new Promise((res,rej)=>{
-        const s=document.createElement('script');
-        s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-        s.onload=res; s.onerror=rej;
-        document.head.appendChild(s);
-      });
-    }
-
-    // 렌더링
-    const canvas = await html2canvas(container,{
-      backgroundColor:'#0d0b1e',
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      logging: false,
-      scrollX: 0,
-      scrollY: 0,
-      width: 460,
-      height: container.scrollHeight,
-      windowWidth: 460,
-      onclone: (doc)=>{
-        // 클론된 문서에서 모든 CSS 변수 강제 해소
-        doc.querySelectorAll('*').forEach(el=>{
-          el.style.backdropFilter='none';
-          el.style.webkitBackdropFilter='none';
-        });
-      }
-    });
-
-    // 컨테이너 제거
-    document.body.removeChild(container);
-
-    const dataUrl = canvas.toDataURL('image/png');
-
-    if(isMobile){
-      const win = window.open('');
-      if(win){
-        win.document.write(`<!DOCTYPE html><html><head>
-          <meta name="viewport" content="width=device-width,initial-scale=1"/>
-          <style>
-            *{box-sizing:border-box;margin:0;padding:0}
-            body{background:#111;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px}
-            .tip{color:#FFD93D;font-family:sans-serif;font-size:14px;text-align:center;background:rgba(255,217,61,.12);border:1px solid rgba(255,217,61,.3);border-radius:10px;padding:12px 16px;line-height:1.6;width:100%;max-width:480px}
-            img{max-width:100%;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
-          </style></head><body>
-          <div class="tip">📸 이미지를 <strong>길게 눌러</strong> 저장하세요!<br><small style="opacity:.7">사진 앱에 저장 또는 공유할 수 있어요</small></div>
-          <img src="${dataUrl}" alt="아비비고물상 추천결과"/>
-          </body></html>`);
-        win.document.close();
-        toast('새 탭에서 길게 눌러 저장하세요! 📸');
-      } else {
-        showImgOverlay(dataUrl);
-      }
-    } else {
-      const link = document.createElement('a');
-      link.download = '아비비고물상_추천결과.png';
-      link.href = dataUrl;
-      link.click();
-      toast('이미지가 저장됐어요! 📸');
-    }
-
-  } catch(e){
-    console.error('캡처 오류:', e);
-    // 컨테이너 혹시 남아있으면 제거
-    const c2 = document.querySelector('[style*="-9999px"]');
-    if(c2) c2.remove();
-    // 대안: 직접 Canvas로 카드 그리기
-    captureWithCanvas();
-  }
-};
 
 function showImgOverlay(dataUrl){
   // 기존 오버레이 제거
@@ -1832,192 +2710,18 @@ function showImgOverlay(dataUrl){
   document.body.appendChild(ov);
 }
 
-// ── Canvas API로 직접 결과 이미지 그리기 (완전한 폴백) ──
+// ── Canvas API로 직접 결과 이미지 그리기 ──
 async function captureWithCanvas(){
   toast('이미지 생성 중... 📸');
   try{
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    const W = 400, PAD = 16, SCALE = 2;
-    const IMG_S = 80, CARD_H = 130, CARD_GAP = 10;
-
-    // 현재 표시된 상품 카드에서 데이터 추출
-    const cards = Array.from(document.querySelectorAll('#res-cards .pc'));
-    const catName = document.getElementById('res-ttl')?.textContent || '추천 장난감';
-    const chips = Array.from(document.querySelectorAll('#res-cp .cp')).map(c=>c.textContent);
-
-    // 낚시대 박스 데이터
-    const rodLines = Array.from(document.querySelectorAll('#res-rod-box [style*="justify-content:space-between"]'))
-      .map(el=>({ label: el.children[0]?.textContent||'', val: el.children[1]?.textContent||'' }));
-
-    // 전체 높이 계산
-    const headerH = 80;
-    const chipsH = chips.length ? 30 : 0;
-    const rodH = rodLines.length ? (rodLines.length * 22 + 40) : 0;
-    const cardsH = cards.length * (CARD_H + CARD_GAP);
-    const wmH = 36;
-    const totalH = headerH + chipsH + rodH + 10 + cardsH + wmH + PAD*2;
-
-    // Canvas 생성
-    const cv = document.createElement('canvas');
-    cv.width = W * SCALE;
-    cv.height = totalH * SCALE;
-    const ctx = cv.getContext('2d');
-    ctx.scale(SCALE, SCALE);
-
-    // ── 배경 ──
-    ctx.fillStyle = '#0d0b1e';
-    ctx.fillRect(0, 0, W, totalH);
-    const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, 300);
-    grd.addColorStop(0, 'rgba(100,60,200,0.25)');
-    grd.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = grd;
-    ctx.fillRect(0, 0, W, totalH);
-
-    let y = PAD;
-
-    // ── 헤더 ──
-    ctx.textAlign = 'center';
-    ctx.fillStyle = '#FFD93D';
-    ctx.font = `bold 22px sans-serif`;
-    ctx.fillText('🐱 ' + catName, W/2, y + 28);
-    y += 40;
-
-    if(chips.length){
-      ctx.font = '11px sans-serif';
-      ctx.fillStyle = 'rgba(255,217,61,0.75)';
-      ctx.fillText(chips.join(' · '), W/2, y + 14);
-      y += 26;
-    }
-
-    // 구분선
-    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-    ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(PAD, y); ctx.lineTo(W-PAD, y); ctx.stroke();
-    y += 12;
-
-    // ── 낚시대 박스 ──
-    if(rodLines.length){
-      roundRect(ctx, PAD, y, W-PAD*2, rodLines.length*22+28, 10);
-      ctx.fillStyle = 'rgba(255,107,107,0.1)';
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(255,107,107,0.35)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-
-      ctx.fillStyle = '#FF6B6B';
-      ctx.font = 'bold 13px sans-serif';
-      ctx.textAlign = 'left';
-      ctx.fillText('🎣 선택한 낚시대', PAD+12, y+18);
-
-      rodLines.forEach((r,i)=>{
-        ctx.fillStyle = 'rgba(255,255,255,0.75)';
-        ctx.font = '12px sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText(r.label, PAD+12, y+36+i*22);
-        ctx.fillStyle = '#FFD93D';
-        ctx.textAlign = 'right';
-        ctx.fillText(r.val, W-PAD-12, y+36+i*22);
-      });
-      y += rodLines.length*22 + 38;
-    }
-
-    // ── 상품 카드 ──
-    for(let i=0; i<cards.length; i++){
-      const card = cards[i];
-      const name  = card.querySelector('.pn2')?.textContent?.trim() || '';
-      const desc  = card.querySelector('.pde')?.textContent?.trim() || '';
-      const price = card.querySelector('.ppr')?.textContent?.trim() || '';
-      const tags  = Array.from(card.querySelectorAll('.ptg')).map(t=>t.textContent).join(' ');
-      const isBest = card.classList.contains('best');
-      const imgEl = card.querySelector('.pt img');
-
-      // 카드 배경
-      roundRect(ctx, PAD, y, W-PAD*2, CARD_H, 12);
-      ctx.fillStyle = isBest ? 'rgba(255,217,61,0.1)' : 'rgba(255,255,255,0.07)';
-      ctx.fill();
-      ctx.strokeStyle = isBest ? '#FFD93D' : 'rgba(255,255,255,0.15)';
-      ctx.lineWidth = isBest ? 2 : 1;
-      ctx.stroke();
-
-      // BEST 뱃지
-      if(isBest){
-        roundRect(ctx, W-PAD-76, y, 76, 22, [0,12,0,12]);
-        ctx.fillStyle = '#FFD93D';
-        ctx.fill();
-        ctx.fillStyle = '#1a1a2e';
-        ctx.font = 'bold 10px sans-serif';
-        ctx.textAlign = 'right';
-        ctx.fillText('👑 BEST 추천', W-PAD-6, y+15);
-      }
-
-      // 이미지 박스
-      const ix = PAD+10, iy = y+10;
-      roundRect(ctx, ix, iy, IMG_S, IMG_S, 8);
-      ctx.fillStyle = '#2a1a4e';
-      ctx.fill();
-
-      if(imgEl && imgEl.naturalWidth > 0){
-        try{
-          await drawImg(ctx, imgEl.src, ix, iy, IMG_S, IMG_S, 8);
-        } catch(e){
-          ctx.fillStyle = 'rgba(255,255,255,0.3)';
-          ctx.font = '30px serif';
-          ctx.textAlign = 'center';
-          ctx.fillText('🐱', ix+IMG_S/2, iy+IMG_S/2+10);
-        }
-      } else {
-        ctx.fillStyle = 'rgba(255,255,255,0.3)';
-        ctx.font = '30px serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('🐱', ix+IMG_S/2, iy+IMG_S/2+10);
-      }
-
-      // 텍스트 영역
-      const tx = PAD+10+IMG_S+12;
-      const maxTW = W-PAD-tx-8;
-
-      ctx.textAlign = 'left';
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 14px sans-serif';
-      ctx.fillText(trimText(ctx, name, maxTW), tx, y+24);
-
-      ctx.fillStyle = 'rgba(255,255,255,0.55)';
-      ctx.font = '11px sans-serif';
-      ctx.fillText(trimText(ctx, desc, maxTW), tx, y+42);
-      // 두 번째 줄
-      if(desc.length > 18){
-        const rest = desc.slice(14);
-        ctx.fillText(trimText(ctx, rest, maxTW), tx, y+56);
-      }
-
-      ctx.fillStyle = '#FFD93D';
-      ctx.font = 'bold 15px sans-serif';
-      ctx.fillText(price, tx, y+76);
-
-      ctx.fillStyle = 'rgba(255,255,255,0.35)';
-      ctx.font = '10px sans-serif';
-      ctx.fillText(trimText(ctx, tags, maxTW), tx, y+94);
-
-      y += CARD_H + CARD_GAP;
-    }
-
-    // ── 워터마크 ──
-    y += 8;
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(255,217,61,0.5)';
-    ctx.font = '10px sans-serif';
-    ctx.fillText('🐱 아비비의고물상 · abibi-cattoys-mbti.vercel.app', W/2, y+16);
-
-    const dataUrl = cv.toDataURL('image/png');
+    const dataUrl = await buildResultImage();
+    if(!dataUrl){ toast('이미지 생성 실패 — 스크린샷을 이용해주세요!'); return; }
 
     if(isMobile){
       const win = window.open('');
       if(win){
-        win.document.write(`<!DOCTYPE html><html><head>
-          <meta name="viewport" content="width=device-width,initial-scale=1"/>
-          <style>*{box-sizing:border-box;margin:0;padding:0}body{background:#0d0b1e;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px}.tip{color:#FFD93D;font-family:sans-serif;font-size:14px;text-align:center;background:rgba(255,217,61,.12);border:1px solid rgba(255,217,61,.3);border-radius:10px;padding:12px 16px;line-height:1.6;width:100%;max-width:440px}img{max-width:100%;border-radius:10px}</style></head>
-          <body><div class="tip">📸 이미지를 <strong>길게 눌러</strong> 저장하세요!</div>
-          <img src="${dataUrl}"/></body></html>`);
+        win.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"/><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0d0b1e;display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px}.tip{color:#FFD93D;font-family:sans-serif;font-size:14px;text-align:center;background:rgba(255,217,61,.12);border:1px solid rgba(255,217,61,.3);border-radius:10px;padding:12px 16px;line-height:1.6;width:100%;max-width:440px}img{max-width:100%;border-radius:10px}</style></head><body><div class="tip">📸 이미지를 <strong>길게 눌러</strong> 저장하세요!</div><img src="'+dataUrl+'"/></body></html>');
         win.document.close();
         toast('새 탭에서 길게 눌러 저장하세요! 📸');
       } else {
@@ -2196,6 +2900,8 @@ window.toast = function(msg){
 initFirebase();
 // 방문 기록 (Firebase 초기화 후)
 setTimeout(()=>recordVisit(), 2000);
+
+
 </script>
 </body>
 </html>
